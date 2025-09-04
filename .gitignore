@@ -1,0 +1,45 @@
+# OS
+.DS_Store
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+logs/
+*.log
+pnpm-debug.log*
+
+# Build artifacts
+dist/
+build/
+coverage/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# SQLite (local data)
+.data/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# App-specific
+.next/
+out/
+.turbo/
+
+# VS Code (keep shared settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+
+generated/
+
+# Keep Prisma schema & migrations tracked!
+# (nothing to ignore under prisma/)
+
