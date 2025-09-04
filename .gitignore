@@ -38,7 +38,7 @@ out/
 !.vscode/extensions.json
 !.vscode/tasks.json
 
-generated/
+/generated/
 
 # Keep Prisma schema & migrations tracked!
 # (nothing to ignore under prisma/)
