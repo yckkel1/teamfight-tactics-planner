@@ -9,3 +9,75 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model GameSet {
+  id         String  @id @default(cuid())
+  name       String  @unique
+  startPatch String?
+  endPatch   String?
+  patches    Patch[]
+  traits     Trait[]
+  units      Unit[]
+}
+
+model Patch {
+  id         String  @id @default(cuid())
+  setId      String
+  semver     String
+  releasedAt DateTime?
+  set        GameSet @relation(fields: [setId], references: [id])
+
+  @@unique([setId, semver])
+  @@index([setId])
+}
+
+model Trait {
+  id          String   @id @default(cuid())
+  setId       String
+  name        String
+  category    String?
+  description String?
+  set         GameSet  @relation(fields: [setId], references: [id])
+  tiers       TraitTier[]
+  unitTraits  UnitTrait[]
+
+  @@unique([setId, name])
+  @@index([setId])
+}
+
+model TraitTier {
+  id       String @id @default(cuid())
+  traitId  String
+  minUnits Int
+  note     String?
+  effects  Json
+  trait    Trait  @relation(fields: [traitId], references: [id])
+
+  @@index([traitId, minUnits])
+}
+
+model Unit {
+  id        String   @id @default(cuid())
+  setId     String
+  name      String
+  cost      Int
+  role      String?
+  baseStats Json
+  ability   Json?
+  set       GameSet  @relation(fields: [setId], references: [id])
+  traits    UnitTrait[]
+
+  @@unique([setId, name])
+  @@index([setId, cost])
+}
+
+model UnitTrait {
+  unitId  String
+  traitId String
+  unit    Unit  @relation(fields: [unitId], references: [id])
+  trait   Trait @relation(fields: [traitId], references: [id])
+
+  @@id([unitId, traitId])
+  @@index([traitId])
+}
+
