@@ -1,13 +1,20 @@
-// Seed a minimal Set 15 example: Jinx + (Star Guardian, Sniper)
+
+// Seeds FULL Set 15 champion roster with their traits (names only) and costs.
+// Source: Mobalytics Set 15 Champions page (costs + traits). Run after `prisma migrate`.
 // Run: pnpm exec prisma db seed
 
-/* WHY CommonJS? Avoids ESM config churn. */
 const { PrismaClient } = require('@prisma/client');
-
 const prisma = new PrismaClient();
 
+/**
+ * Known class vs origin sets (from Mobalytics Classes/Origins pages).
+ */
+const CLASS_TRAITS = new Set([
+  'Bastion', 'Duelist', 'Edgelord', 'Executioner', 'Heavyweight', 'Juggernaut',
+  'Prodigy', 'Protector', 'Sniper', 'Sorcerer', 'Strategist'
+]);
+
 async function upsertSet() {
-  // Deterministic ID so other rows can reference easily
   return prisma.gameSet.upsert({
     where: { name: 'K.O. Coliseum' },
     update: {},
@@ -15,105 +22,127 @@ async function upsertSet() {
   });
 }
 
-async function upsertTrait(setId, name, category, description, tiers) {
-  // Upsert trait by composite (setId, name)
-  const trait = await prisma.trait.upsert({
+async function upsertTrait(setId, name) {
+  const category = CLASS_TRAITS.has(name) ? 'Class' : 'Origin';
+  return prisma.trait.upsert({
     where: { setId_name: { setId, name } },
-    update: {},
-    create: { setId, name, category, description },
+    update: { category },
+    create: { setId, name, category },
   });
-
-  // Replace tiers idempotently for clarity
-  await prisma.traitTier.deleteMany({ where: { traitId: trait.id } });
-  if (tiers?.length) {
-    await prisma.traitTier.createMany({
-      data: tiers.map((t) => ({ traitId: trait.id, ...t })),
-    });
-  }
-  return trait;
 }
 
 async function upsertUnit(setId, unit) {
-  const created = await prisma.unit.upsert({
+  return prisma.unit.upsert({
     where: { setId_name: { setId, name: unit.name } },
-    update: {},
+    update: { cost: unit.cost, role: unit.role ?? null },
     create: {
       setId,
       name: unit.name,
       cost: unit.cost,
-      role: unit.role,
-      baseStats: unit.baseStats,
-      ability: unit.ability,
+      role: unit.role ?? null,
+      baseStats: {},
+      ability: null,
     },
   });
-  return created;
 }
 
 async function linkUnitTraits(unitId, traitIds) {
-  if (!traitIds.length) return;
-  // Clear then insert (idempotent seed)
   await prisma.unitTrait.deleteMany({ where: { unitId } });
-  await prisma.unitTrait.createMany({
-    data: traitIds.map((traitId) => ({ unitId, traitId })),
-  });
+  if (traitIds.length) {
+    await prisma.unitTrait.createMany({ data: traitIds.map((traitId) => ({ unitId, traitId })) });
+  }
 }
+
+// ===== Full roster from Mobalytics (name, cost, traits) =====
+const RAW_UNITS = [
+  { name: 'Aatrox', cost: 1, traits: ['Mighty Mech', 'Heavyweight', 'Juggernaut'] },
+  { name: 'Ahri', cost: 3, traits: ['Star Guardian', 'Sorcerer'] },
+  { name: 'Akali', cost: 4, traits: ['Supreme Cells', 'Executioner'] },
+  { name: 'Ashe', cost: 4, traits: ['Crystal Gambit', 'Duelist'] },
+  { name: 'Braum', cost: 5, traits: ['The Champ', 'Luchador', 'Bastion'] },
+  { name: 'Caitlyn', cost: 3, traits: ['Battle Academia', 'Sniper'] },
+  { name: 'Darius', cost: 3, traits: ['Supreme Cells', 'Heavyweight'] },
+  { name: 'Dr. Mundo', cost: 2, traits: ['Luchador', 'Juggernaut'] },
+  { name: 'Ekko', cost: 5, traits: ['Prodigy', 'Sorcerer', 'Strategist'] },
+  { name: 'Ezreal', cost: 1, traits: ['Battle Academia', 'Prodigy'] },
+  { name: 'Gangplank', cost: 2, traits: ['Mighty Mech', 'Duelist'] },
+  { name: 'Garen', cost: 1, traits: ['Battle Academia', 'Bastion'] },
+  { name: 'Gnar', cost: 1, traits: ['Luchador', 'Sniper'] },
+  { name: 'Gwen', cost: 5, traits: ['Soul Fighter', 'Sorcerer'] },
+  { name: 'Janna', cost: 2, traits: ['Crystal Gambit', 'Protector', 'Strategist'] },
+  { name: 'Jarvan IV', cost: 4, traits: ['Mighty Mech', 'Strategist'] },
+  { name: 'Jayce', cost: 3, traits: ['Battle Academia', 'Heavyweight'] },
+  { name: 'Jhin', cost: 2, traits: ['Wraith', 'Sniper'] },
+  { name: 'Jinx', cost: 4, traits: ['Star Guardian', 'Sniper'] },
+  { name: "Kai'Sa", cost: 2, traits: ['Supreme Cells', 'Duelist'] },
+  { name: 'Kalista', cost: 1, traits: ['Soul Fighter', 'Executioner'] },
+  { name: 'Karma', cost: 4, traits: ['Mighty Mech', 'Sorcerer'] },
+  { name: 'Katarina', cost: 2, traits: ['Battle Academia', 'Executioner'] },
+  { name: 'Kayle', cost: 1, traits: ['Wraith', 'Duelist'] },
+  { name: 'Kennen', cost: 1, traits: ['Supreme Cells', 'Protector', 'Sorcerer'] },
+  { name: 'Kobuko', cost: 2, traits: ['Mentor', 'Heavyweight'] },
+  { name: "Kog'Maw", cost: 3, traits: ['Monster Trainer'] },
+  { name: "K'Sante", cost: 4, traits: ['Wraith', 'Protector'] },
+  { name: 'Lee Sin', cost: 5, traits: ['Stance Master', 'Duelist', 'Juggernaut', 'Executioner'] },
+  { name: 'Leona', cost: 4, traits: ['Battle Academia', 'Bastion'] },
+  { name: 'Lucian', cost: 1, traits: ['Mighty Mech', 'Sorcerer'] },
+  { name: 'Lulu', cost: 3, traits: ['Monster Trainer'] },
+  { name: 'Lux', cost: 2, traits: ['Soul Fighter', 'Sorcerer'] },
+  { name: 'Malphite', cost: 1, traits: ['The Crew', 'Protector'] },
+  { name: 'Malzahar', cost: 3, traits: ['Wraith', 'Prodigy'] },
+  { name: 'Naafiri', cost: 1, traits: ['Soul Fighter', 'Juggernaut'] },
+  { name: 'Neeko', cost: 3, traits: ['Star Guardian', 'Protector'] },
+  { name: 'Poppy', cost: 4, traits: ['Star Guardian', 'Heavyweight'] },
+  { name: 'Rakan', cost: 2, traits: ['Battle Academia', 'Protector'] },
+  { name: 'Rammus', cost: 3, traits: ['Monster Trainer'] },
+  { name: 'Rell', cost: 1, traits: ['Star Guardian', 'Bastion'] },
+  { name: 'Ryze', cost: 4, traits: ['Mentor', 'Executioner', 'Strategist'] },
+  { name: 'Samira', cost: 4, traits: ['Soul Fighter', 'Edgelord'] },
+  { name: 'Senna', cost: 3, traits: ['Mighty Mech', 'Executioner'] },
+  { name: 'Seraphine', cost: 5, traits: ['Star Guardian', 'Prodigy'] },
+  { name: 'Sett', cost: 4, traits: ['Soul Fighter', 'Juggernaut'] },
+  { name: 'Shen', cost: 2, traits: ['The Crew', 'Bastion', 'Edgelord'] },
+  { name: 'Sivir', cost: 1, traits: ['The Crew', 'Sniper'] },
+  { name: 'Smolder', cost: 3, traits: ['Monster Trainer'] },
+  { name: 'Swain', cost: 3, traits: ['Crystal Gambit', 'Bastion', 'Sorcerer'] },
+  { name: 'Syndra', cost: 1, traits: ['Crystal Gambit', 'Star Guardian', 'Prodigy'] },
+  { name: 'Twisted Fate', cost: 5, traits: ['Rogue Captain', 'The Crew'] },
+  { name: 'Udyr', cost: 3, traits: ['Mentor', 'Juggernaut', 'Duelist'] },
+  { name: 'Varus', cost: 5, traits: ['Wraith', 'Sniper'] },
+  { name: 'Vi', cost: 2, traits: ['Crystal Gambit', 'Juggernaut'] },
+  { name: 'Viego', cost: 3, traits: ['Soul Fighter', 'Duelist'] },
+  { name: 'Volibear', cost: 4, traits: ['Luchador', 'Edgelord'] },
+  { name: 'Xayah', cost: 2, traits: ['Star Guardian', 'Edgelord'] },
+  { name: 'Xin Zhao', cost: 2, traits: ['Soul Fighter', 'Bastion'] },
+  { name: 'Yasuo', cost: 3, traits: ['Mentor', 'Edgelord'] },
+  { name: 'Yone', cost: 5, traits: ['Mighty Mech', 'Edgelord'] },
+  { name: 'Yuumi', cost: 4, traits: ['Battle Academia', 'Prodigy'] },
+  { name: 'Zac', cost: 1, traits: ['Wraith', 'Heavyweight'] },
+  { name: 'Ziggs', cost: 3, traits: ['The Crew', 'Strategist'] },
+  { name: 'Zyra', cost: 5, traits: ['Crystal Gambit', 'Rosemother'] },
+];
 
 async function main() {
   const set = await upsertSet();
 
-  // --- Traits ---
-  const starGuardian = await upsertTrait(set.id, 'Star Guardian', 'Origin',
-    'Teamwork bonus scales with number of Star Guardians.', [
-      { minUnits: 2, note: '100%', effects: { teamwork_bonus_multiplier_pct: 100 } },
-      { minUnits: 3, note: '110%', effects: { teamwork_bonus_multiplier_pct: 110 } },
-      { minUnits: 4, note: '120%', effects: { teamwork_bonus_multiplier_pct: 120 } },
-      { minUnits: 5, note: '130%', effects: { teamwork_bonus_multiplier_pct: 130 } },
-      { minUnits: 6, note: '140%', effects: { teamwork_bonus_multiplier_pct: 140 } },
-      { minUnits: 7, note: '150%', effects: { teamwork_bonus_multiplier_pct: 150 } },
-      { minUnits: 8, note: '160%', effects: { teamwork_bonus_multiplier_pct: 160 } },
-      { minUnits: 9, note: '180%', effects: { teamwork_bonus_multiplier_pct: 180 } },
-      { minUnits: 10, note: '200%', effects: { teamwork_bonus_multiplier_pct: 200 } },
-    ]);
+  // Upsert traits
+  const traitNames = Array.from(new Set(RAW_UNITS.flatMap((u) => u.traits)));
+  const traitIdByName = new Map();
+  for (const name of traitNames) {
+    const t = await upsertTrait(set.id, name);
+    traitIdByName.set(name, t.id);
+  }
 
-  const sniper = await upsertTrait(set.id, 'Sniper', 'Class',
-    'Gain Damage Amp; extra per hex to target.', [
-      { minUnits: 2, note: '2 units', effects: { damage_amp_pct: 13, per_hex_pct: 3 } },
-      { minUnits: 3, note: '3 units', effects: { damage_amp_pct: 16, per_hex_pct: 5 } },
-      { minUnits: 4, note: '4 units', effects: { damage_amp_pct: 22, per_hex_pct: 7 } },
-      { minUnits: 5, note: '5 units', effects: { damage_amp_pct: 25, per_hex_pct: 10 } },
-    ]);
+  // Upsert units + links
+  for (const u of RAW_UNITS) {
+    const unit = await upsertUnit(set.id, u);
+    const traitIds = u.traits.map((n) => traitIdByName.get(n)).filter(Boolean);
+    await linkUnitTraits(unit.id, traitIds);
+  }
 
-  // --- Unit: Jinx ---
-  const jinx = await upsertUnit(set.id, {
-    name: 'Jinx',
-    cost: 4,
-    role: 'Marksman',
-    baseStats: {
-      hp: 850, ad: 70, as: 0.75, armor: 35, mr: 35, range: 4,
-      mana: { start: 10, max: 80 },
-    },
-    ability: {
-      name: 'Star Rocket Blast Off!',
-      passive: 'Attacks grant stacking AS; crits grant more.',
-      numbers: {
-        attack_speed_per_attack_pct: [6, 6, 30],
-        damage: [280, 420, 1260],
-        split_damage: [575, 875, 4000],
-      },
-      scaling: { damage: 'AD' },
-    },
-  });
-
-  await linkUnitTraits(jinx.id, [starGuardian.id, sniper.id]);
-
-  console.log('Seeded: Set', set.name, '| Unit:', jinx.name, '| Traits:', 'Star Guardian, Sniper');
+  console.log(`Seeded Set 15 roster: ${RAW_UNITS.length} units, ${traitNames.length} traits.`);
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch((e) => { console.error(e); process.exit(1); })
+  .finally(async () => { await prisma.$disconnect(); });
