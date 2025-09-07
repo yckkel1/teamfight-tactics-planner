@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:seed:tiers": "node prisma/seed.tiers.js" 
+    "db:seed:tiers": "node prisma/seed.tiers.js",
+    "db:check": "node prisma/check.integrity.js" 
   },
   "keywords": [],
   "author": "",
