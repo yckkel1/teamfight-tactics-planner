@@ -1,0 +1,158 @@
+{
+  "Bastion": [
+    { "minUnits": 2, "note": "Resists", "effects": { "schema": 1, "primitives": [{ "op": "TeamResists", "armor": 18, "mr": 18 }] } },
+    { "minUnits": 4, "note": "Resists+", "effects": { "schema": 1, "primitives": [{ "op": "TeamResists", "armor": 40, "mr": 40 }] } },
+    { "minUnits": 6, "note": "Resists++ (+25 to non-Bastion)", "effects": { "schema": 1, "primitives": [{ "op": "TeamResists", "armor": 75, "mr": 75 }, { "op": "NonClassBonus", "class": "Bastion", "armor": 25, "mr": 25 }] } }
+  ],
+
+  "Duelist": [
+    { "minUnits": 2, "note": "+AS per attack (max 12 stacks)", "effects": { "schema": 1, "primitives": [{ "op": "PerStackAS", "per_stack_pct": 4, "max_stacks": 12 }] } },
+    { "minUnits": 4, "note": "+AS per attack", "effects": { "schema": 1, "primitives": [{ "op": "PerStackAS", "per_stack_pct": 7, "max_stacks": 12 }] } },
+    { "minUnits": 6, "note": "+AS per attack + Durability", "effects": { "schema": 1, "primitives": [{ "op": "PerStackAS", "per_stack_pct": 10, "max_stacks": 12 }, { "op": "MultPct", "stat": "durability", "value_pct": 12 }] } }
+  ],
+
+  "Edgelord": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "Omnivamp", "value_pct": 10 }, { "op": "MultPct", "stat": "ad", "value_pct": 15 }, { "op": "ConditionalAS", "when": "target_below_50", "value_pct": 40 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "Omnivamp", "value_pct": 12 }, { "op": "MultPct", "stat": "ad", "value_pct": 35 }, { "op": "ConditionalAS", "when": "target_below_50", "value_pct": 40 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "Omnivamp", "value_pct": 15 }, { "op": "MultPct", "stat": "ad", "value_pct": 55 }, { "op": "ConditionalAS", "when": "target_below_50", "value_pct": 40 }] } }
+  ],
+
+  "Executioner": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "Crit", "chance_pct": 25, "crit_mult_pct": 10 }, { "op": "SpellsCanCrit" }] } },
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "Crit", "chance_pct": 35, "crit_mult_pct": 12 }, { "op": "SpellsCanCrit" }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "Crit", "chance_pct": 50, "crit_mult_pct": 18 }, { "op": "SpellsCanCrit" }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "Crit", "chance_pct": 55, "crit_mult_pct": 28 }, { "op": "SpellsCanCrit" }] } }
+  ],
+
+  "Heavyweight": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 100 }, { "op": "MultPct", "stat": "hp", "value_pct": 20 }, { "op": "ADFromHPPct", "ratio_pct": 0.20 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 100 }, { "op": "MultPct", "stat": "hp", "value_pct": 40 }, { "op": "ADFromHPPct", "ratio_pct": 0.40 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 100 }, { "op": "MultPct", "stat": "hp", "value_pct": 60 }, { "op": "ADFromHPPct", "ratio_pct": 0.60 }] } }
+  ],
+
+  "Juggernaut": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "DamageReduction", "above50_pct": 15, "below50_pct": 25 }, { "op": "OnDeathTeamHeal", "class_only": true, "heal_pct_hp": 10 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "DamageReduction", "above50_pct": 20, "below50_pct": 30 }, { "op": "OnDeathTeamHeal", "class_only": true, "heal_pct_hp": 10 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "DamageReduction", "above50_pct": 25, "below50_pct": 35 }, { "op": "OnDeathTeamHeal", "class_only": true, "heal_pct_hp": 10 }] } }
+  ],
+
+  "Prodigy": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "TeamManaRegenPct", "team_pct": 1, "class_pct": 3 }] } },
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "TeamManaRegenPct", "team_pct": 1, "class_pct": 4 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "TeamManaRegenPct", "team_pct": 2, "class_pct": 6 }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "TeamManaRegenPct", "team_pct": 3, "class_pct": 7 }, { "op": "AbilityHeal", "class_only": true, "heal_pct_damage": 12 }] } }
+  ],
+
+  "Protector": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "ShieldPctHP", "value_pct": 20 }, { "op": "DurabilityWhileShielded", "value_pct": 5 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "ShieldPctHP", "value_pct": 40 }, { "op": "DurabilityWhileShielded", "value_pct": 5 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "ShieldPctHP", "value_pct": 60 }, { "op": "DurabilityWhileShielded", "value_pct": 5 }] } }
+  ],
+
+  "Sniper": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpRange", "base_pct": 13, "per_hex_pct": 3 }] } },
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpRange", "base_pct": 16, "per_hex_pct": 5 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpRange", "base_pct": 22, "per_hex_pct": 7 }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpRange", "base_pct": 25, "per_hex_pct": 10 }] } }
+  ],
+
+  "Sorcerer": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "APFlat", "ap": 20 }, { "op": "DeathEcho", "targets": 1, "pct_max_hp": 8 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "APFlat", "ap": 50 }, { "op": "DeathEcho", "targets": 1, "pct_max_hp": 10 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "APFlat", "ap": 80 }, { "op": "DeathEcho", "targets": 2, "pct_max_hp": 12 }] } }
+  ],
+
+  "Strategist": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "RowShieldAndDA", "front_shield": 150, "back_da_pct": 4, "self_mult": 3 }] } },
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "RowShieldAndDA", "front_shield": 225, "back_da_pct": 6, "self_mult": 3 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "RowShieldAndDA", "front_shield": 350, "back_da_pct": 10, "self_mult": 3 }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "RowShieldAndDA", "front_shield": 450, "back_da_pct": 14, "self_mult": 3 }] } }
+  ],
+
+  "Battle Academia": [
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "Potential", "value": 3 }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "Potential", "value": 5 }] } },
+    { "minUnits": 7, "effects": { "schema": 1, "primitives": [{ "op": "Potential", "value": 7 }, { "op": "TruePotential", "value_pct": 11 }] } }
+  ],
+
+  "Crystal Gambit": [
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "GemPower", "per_death": 2, "per_round": 10 }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "GemPower", "per_death": 3, "per_round": 15 }] } },
+    { "minUnits": 7, "effects": { "schema": 1, "primitives": [{ "op": "GemPowerRewardsMult", "mult_pct": 150 }, { "op": "MultPct", "stat": "hp", "value_pct": 0 }, { "op": "TeamBonus", "hp": 500, "damage_amp_pct": 20 }] } },
+    { "minUnits": 10, "effects": { "schema": 1, "primitives": [{ "op": "CrystalGambitCapstone" }] } }
+  ],
+
+  "Luchador": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "ADFlat", "ad": 15 }, { "op": "BloodiedLeap", "threshold_pct": 50, "heal_pct_hp": 15, "knockup_sec": 1 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "ADFlat", "ad": 40 }, { "op": "BloodiedLeap", "threshold_pct": 50, "heal_pct_hp": 35, "knockup_sec": 1 }] } }
+  ],
+
+  "Mentor": [
+    { "minUnits": 1, "effects": { "schema": 1, "primitives": [{ "op": "MentorBonuses", "kobuko_dr_pct": 6, "udyr_ad_ap_pct": 8, "yasuo_as_pct": 10, "ryze_mana_on_hit": 2, "applies_to": "allies" }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "MentorBonuses", "kobuko_dr_pct": 6, "udyr_ad_ap_pct": 8, "yasuo_as_pct": 10, "ryze_mana_on_hit": 2, "applies_to": "mentors_only", "upgrade_abilities": true }] } }
+  ],
+
+  "Mighty Mech": [
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "MightyMechArrival" }] } },
+    { "minUnits": 5, "effects": { "schema": 1, "primitives": [{ "op": "MightyMechBladeProtocol", "level": 1 }] } },
+    { "minUnits": 7, "effects": { "schema": 1, "primitives": [{ "op": "MightyMechBladeProtocol", "level": 2 }] } }
+  ],
+
+  "Monster Trainer": [
+    { "minUnits": 1, "effects": { "schema": 1, "primitives": [{ "op": "SummonMonster" }] } }
+  ],
+
+  "Rogue Captain": [
+    { "minUnits": 1, "effects": { "schema": 1, "primitives": [{ "op": "CrewShipUpgrade", "true_damage_pct": 15 }] } }
+  ],
+
+  "Rosemother": [
+    { "minUnits": 1, "effects": { "schema": 1, "primitives": [{ "op": "SpawnPlants", "front": "GraspingRoots", "back": "DeadlySpines" }] } }
+  ],
+
+  "Soul Fighter": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 120 }, { "op": "StackingADAPPerSec", "ad_per_sec": 1, "ap_per_sec": 1, "max_stacks": 8 }, { "op": "TrueDamageBonus", "value_pct": 10 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 240 }, { "op": "StackingADAPPerSec", "ad_per_sec": 2, "ap_per_sec": 2, "max_stacks": 8 }, { "op": "TrueDamageBonus", "value_pct": 16 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 450 }, { "op": "StackingADAPPerSec", "ad_per_sec": 3, "ap_per_sec": 3, "max_stacks": 8 }, { "op": "TrueDamageBonus", "value_pct": 22 }] } },
+    { "minUnits": 8, "effects": { "schema": 1, "primitives": [{ "op": "TeamHPFlat", "hp": 650 }, { "op": "StackingADAPPerSec", "ad_per_sec": 4, "ap_per_sec": 4, "max_stacks": 8 }, { "op": "TrueDamageBonus", "value_pct": 28 }] } }
+  ],
+
+  "Stance Master": [
+    { "minUnits": 1, "effects": { "schema": 1, "primitives": [{ "op": "ChooseStance", "stances": ["Duelist", "Executioner", "Juggernaut"] }] } }
+  ],
+
+  "Star Guardian": [
+    { "minUnits": 2,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 100 }] } },
+    { "minUnits": 3,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 110 }] } },
+    { "minUnits": 4,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 120 }] } },
+    { "minUnits": 5,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 130 }] } },
+    { "minUnits": 6,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 140 }] } },
+    { "minUnits": 7,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 145 }] } },
+    { "minUnits": 8,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 150 }] } },
+    { "minUnits": 9,  "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 160 }] } },
+    { "minUnits": 10, "effects": { "schema": 1, "primitives": [{ "op": "TeamworkBonusMult", "value_pct": 200 }] } }
+  ],
+
+  "Supreme Cells": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpSplit", "cells_da_pct": 8, "supreme_da_pct": 12, "execute_threshold_pct": 10 }] } },
+    { "minUnits": 3, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpSplit", "cells_da_pct": 18, "supreme_da_pct": 30, "execute_threshold_pct": 10 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "DamageAmpSplit", "cells_da_pct": 28, "supreme_da_pct": 50, "execute_threshold_pct": 10 }, { "op": "SecondSupreme" }] } }
+  ],
+
+  "The Champ": [
+    { "minUnits": 1, "effects": { "schema": 1, "primitives": [{ "op": "PoroFansEconomy" }] } }
+  ],
+
+  "The Crew": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [
+      { "op": "CrewOnline", "as_pct_per_member": 5, "hp_pct_per_member": 5 },
+      { "op": "CrewThreeStarBonuses", "one": { "extra_xp_per_reroll": 1, "odds_never_drop": true }, "two": { "free_rerolls_per_round": 1 }, "three": { "rocket_extra_damage": 280, "rocket_damage": 80 }, "four": { "rocket_rate_bonus_per_level_pct": 2.5 }, "five": { "planet_cracker": true } }
+    ] } }
+  ],
+
+  "Wraith": [
+    { "minUnits": 2, "effects": { "schema": 1, "primitives": [{ "op": "ShadowRealmEcho", "damage_pct": 20 }, { "op": "LowestWraithHeal", "heal_pct": 18 }] } },
+    { "minUnits": 4, "effects": { "schema": 1, "primitives": [{ "op": "ShadowRealmEcho", "damage_pct": 40 }, { "op": "LowestWraithHeal", "heal_pct": 18 }] } },
+    { "minUnits": 6, "effects": { "schema": 1, "primitives": [{ "op": "ShadowRealmEcho", "damage_pct": 60 }, { "op": "LowestWraithHeal", "heal_pct": 18 }] } }
+  ]
+}
