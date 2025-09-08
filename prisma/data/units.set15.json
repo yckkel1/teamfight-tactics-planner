@@ -1,0 +1,172 @@
+[
+{
+    "name": "Aatrox",
+    "baseStats": {
+      "hp": [650, 1170, 2106],
+      "ad": [50, 75, 113],
+      "as": 0.65,
+      "armor": 40,
+      "mr": 40,
+      "range": 1,
+      "mana": { "start": 20, "max": 80 }
+    },
+    "ability": {
+        "name": "Blade Vigor",
+        "tags": ["active", "self-heal", "single-target"],
+        "stats": {
+            "heal_hp_pct": 4,
+            "heal_magic_flat": [100, 105, 110],
+            "dmg_magic_flat": [25, 40, 55],
+            "dmg_ad_flat": [100, 150, 225],
+            "missing_hp_amp_pct_max": 100,
+            "amp_applies": ["heal", "damage"],
+            "amp_curve": "linear"
+        },
+        "text": "Heals (4% max HP + 100/105/110) and deals 25/40/55 magic + (100/150/225)% AD to current target. Healing and damage increase up to 100% based on missing HP."
+    }
+},
+{
+    "name": "Ezreal",
+    "baseStats": {
+      "hp": [500, 900, 1620],
+      "ad": [50, 75, 113],
+      "as": 0.70,
+      "armor": 20,
+      "mr": 20,
+      "range": 4,
+      "mana": { "start": 0, "max": 50 }
+    },
+    "ability": {
+        "name": "Rising Spell Force",
+        "tags": ["active", "blink", "single-target", "self-buff"],
+        "stats": {
+            "dmg_magic_flat": [230, 350, 600],
+            "dmg_ad_flat": [115, 175, 300],
+            "as_bonus_pct": 25,
+            "as_bonus_duration_sec": 5,
+            "ad_per_potential_flat": 4,
+            "ap_per_potential_flat": 4,
+            "buff_duration": "combat"
+        },
+        "text": "Fires a blast at current target, dealing 230/350/600 magic + 115/175/300 AD. Blinks a short distance, then gains 25% attack speed for 5s and +4 AD and +4 AP per Potential for the rest of combat."
+    }
+},
+{
+    "name": "Garen",
+    "baseStats": {
+      "hp": [700, 1260, 2268],
+      "ad": [55, 83, 124],
+      "as": 0.60,
+      "armor": 40,
+      "mr": 40,
+      "range": 1,
+      "mana": { "start": 20, "max": 80 }
+    },
+    "ability": {
+        "name": "Mighty Blade of Justice",
+        "tags": ["active", "blink", "single-target", "self-buff"],
+        "stats": {
+            "heal_hp_pct": 8,
+            "heal_magic_flat": [330, 360, 390],            
+            "dmg_hp_pct": 10,
+            "dmg_ad_flat": [80, 100, 125],
+            "stacks_on_cast": 1,
+            "stack_max_hp_flat": 4,
+            "stack_max_hp_per_potential_flat": [2, 4, 6],
+            "stack_duration": "combat"
+        },
+        "text": "Heals for 8% max HP + 330/360/390 magic and deals 10% HP + 80/100/125 AD as physical damage to the target. On cast, gain 1 stack; each stack grants +4 max HP plus +2/4/6 max HP per Potential for the rest of combat."
+    }
+},
+{
+    "name": "Gnar",
+    "baseStats": {
+      "hp": [500, 900, 1620],
+      "ad": [50, 75, 113],
+      "as": 0.70,
+      "armor": 20,
+      "mr": 20,
+      "range": 4,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+        "name": "Gadagadagada!",
+        "tags": ["passive", "active", "stacking", "self-buff", "ally-buff"],
+        "stats": {
+            "as_per_attack_same_target_pct": 8,
+            "as_stack_cap_pct": 80,
+            "active_duration_sec": 6,
+            "self_ad_bonus_pct": 90,
+            "ally_ad_bonus_pct": [20, 25, 35],
+            "ally_targets": 2,
+            "ally_targeting": "nearby_allies_prioritize_attack"
+        },
+        "text": "Passive: Gain 8% Attack Speed per consecutive attack on the same target (up to 80%). Active: For 6s, gain 90% AD and grant 2 nearby allies 20/25/35% AD, prioritizing attack-focused allies."
+    }
+},
+{
+    "name": "Kalista",
+    "baseStats": {
+      "hp": [500, 900, 1620],
+      "ad": [55, 83, 124],
+      "as": 0.70,
+      "armor": 20,
+      "mr": 20,
+      "range": 4,
+      "mana": { "start": 10, "max": 90 }
+    },
+    "ability": {
+        "name": "Spirit Spear",
+        "tags": ["active", "projectile", "mixed-damage", "overkill-carryover"],
+        "stats": {
+            "targeting": "farthest_enemy",
+            "dmg_ad_flat": [440, 660, 1035],
+            "dmg_ap_flat": [60, 90, 135],
+            "damage_type": "mixed",
+            "pierce_on_kill": true
+        },
+        "text": "Hurls a spear at the farthest enemy, dealing 440/660/1035 AD + 60/90/135 AP to the first enemy hit. If that enemy dies, the spear continues and applies the overkill damage to the next enemy hit."
+    }
+},
+{
+    "name": "Kayle",
+    "baseStats": {
+      "hp": [500, 900, 1620],
+      "ad": [30, 45, 68],
+      "as": 0.70,
+      "armor": 25,
+      "mr": 25,
+      "range": 4,
+      "mana": { "start": 0, "max": 0 }
+    },
+    "ability": {
+        "name": "Unleash the Demon",
+        "tags": ["passive", "on-hit", "shred", "scales-with-tactician-level"],
+        "stats": {
+            "on_hit_magic_flat": [33, 50, 75],
+            "tactician_power": [
+            {
+                "min_level": 6,
+                "effects": {
+                "wave_every_attacks": 3,
+                "wave_damage_magic_flat": [50, 75, 110],
+                "wave_shred_mr_pct": 20,
+                "wave_shred_duration_sec": 3
+                }
+            },
+            {
+                "min_level": 9,
+                "effects": {
+                "wave_every_attacks": 1,
+                "wave_damage_magic_flat": [50, 75, 110],
+                "wave_shred_mr_pct": 20,
+                "wave_shred_duration_sec": 3,
+                "wave_extended_range": true
+                }
+            }
+            ]
+        },
+        "text": "Passive: Attacks deal 33/50/75 bonus magic damage. Gains additional power by Tactician level. Level 6+: every 3rd attack launches a wave that deals 50/75/110 magic damage and Shreds 20% MR for 3s. Level 9+: every attack launches a (farther-traveling) wave with the same damage and shred."
+    }
+}
+]
