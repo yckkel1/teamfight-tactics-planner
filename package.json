@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:seed:tiers": "node prisma/seed.tiers.js",
     "db:seed:units": "node prisma/seed.units.js",
-    "db:check": "node prisma/check.integrity.js",
-    "validate:units": "node prisma/validate.units.js"
+    "db:validate:tiers": "node prisma/validate.tiers.js",
+    "db:validate:units": "node prisma/validate.units.js",
+    "db:import:units": "node prisma/import.units.js",
+    "db:print:units": "node prisma/print.units.js"
   },
   "keywords": [],
   "author": "",
