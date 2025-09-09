@@ -1,39 +1,20 @@
 {
   "name": "teamfight-tactics-planner",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "db:seed:tiers": "node prisma/seed.tiers.js",
-    "db:seed:units": "node prisma/seed.units.js",
-    "db:validate:tiers": "node prisma/validate.tiers.js",
-    "db:validate:units": "node prisma/validate.units.js",
-    "db:import:units": "node prisma/import.units.js",
-    "db:print:units": "node prisma/print.units.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "UNLICENSED",
-  "packageManager": "pnpm@10.15.1",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "type": "commonjs",
+  "prisma": { "seed": "node prisma/seed.js" },
+  "scripts": {
+    "dev": "pnpm -F @data/models run build && pnpm -F @app/api run dev",
+    "build": "pnpm -F @data/models run build && pnpm -F @app/api run build",
+    "start": "pnpm -F @app/api run start",
+    "db:reset": "rm -f prisma/.data/tft.db",
+    "db:all": "pnpm exec prisma generate --schema prisma/schema.prisma && pnpm exec prisma migrate deploy --schema prisma/schema.prisma && pnpm exec prisma db seed --schema prisma/schema.prisma && node prisma/seed.tiers.js && node prisma/import.units.js && node prisma/validate.tiers.js && node prisma/validate.units.js"
+  },
   "devDependencies": {
-    "@types/node": "^24.3.0",
-    "eslint": "^9.34.0",
-    "prettier": "^3.6.2",
     "prisma": "^6.15.0",
-    "tsx": "^4.20.5",
-    "typescript": "^5.9.2",
-    "zod": "^4.1.5"
+    "zod": "^3.25.76"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }
