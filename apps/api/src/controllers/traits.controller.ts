@@ -7,7 +7,10 @@ export class TraitsController {
 
     list = async (req: FastifyRequest, reply: FastifyReply) => {
         const parsed = TraitsQuerySchema.safeParse((req as any).query);
-        if (!parsed.success) return reply.badRequest(parsed.error.flatten());
+        if (!parsed.success) {
+            const details = parsed.error.flatten();
+            return reply.code(400).send({ error: { code: 'BadRequest', message: 'Invalid query', details } });
+        }
         const payload = await this.svc.list(parsed.data);
         return reply.send(payload);
     };

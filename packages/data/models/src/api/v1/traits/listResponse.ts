@@ -1,5 +1,5 @@
-import type { Trait } from './trait.js';
-import { PageInfo } from '../common/pageInfo.js';
+import type { Trait } from './trait';
+import { PageInfo } from '../common/pageInfo';
 
 
 export class TraitsListResponse {

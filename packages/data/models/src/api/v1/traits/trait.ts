@@ -1,4 +1,4 @@
-import type { Tier } from './tier.js';
+import type { Tier } from './tier';
 
 export type TraitCategory = 'Class' | 'Origin' | null;
 
