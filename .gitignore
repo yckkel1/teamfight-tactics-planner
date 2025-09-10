@@ -43,3 +43,6 @@ out/
 # Keep Prisma schema & migrations tracked!
 # (nothing to ignore under prisma/)
 
+apps/api/dist
+packages/data/models/dist
+apps/api/prisma/.data

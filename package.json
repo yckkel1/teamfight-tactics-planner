@@ -7,11 +7,20 @@
     "build": "pnpm -F @data/models run build && pnpm -F @app/api run build",
     "start": "pnpm -F @app/api run start",
     "db:all": "pnpm exec prisma generate --schema prisma/schema.prisma && pnpm exec prisma migrate deploy --schema prisma/schema.prisma && pnpm exec prisma db seed --schema prisma/schema.prisma && node prisma/seed.tiers.js && node prisma/import.units.js && node prisma/validate.tiers.js && node prisma/validate.units.js",
-    "db:reset": "rm -f prisma/.data/tft.db prisma/.data/tft.db-shm prisma/.data/tft.db-wal"
+    "db:reset": "rm -f prisma/.data/tft.db prisma/.data/tft.db-shm prisma/.data/tft.db-wal",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "prisma": "^6.15.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "typescript": "^5.9.2",
+    "eslint": "^9.10.0",
+    "@eslint/js": "^9.10.0",
+    "typescript-eslint": "^8.4.0",
+    "prettier": "^3.3.3",
+    "eslint-config-prettier": "^9.1.0"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0"
