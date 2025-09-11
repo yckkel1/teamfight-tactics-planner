@@ -1,0 +1,9 @@
+# build output
+**/dist/
+# prisma sqlite data
+**/.data/
+# lockfiles
+pnpm-lock.yaml
+# generated types
+**/node_modules/
+**/generated
