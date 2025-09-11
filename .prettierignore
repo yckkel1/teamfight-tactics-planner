@@ -6,3 +6,4 @@
 pnpm-lock.yaml
 # generated types
 **/node_modules/
+**/generated
