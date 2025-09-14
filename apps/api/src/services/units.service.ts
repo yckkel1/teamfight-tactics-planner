@@ -11,20 +11,13 @@ async function getSetId(): Promise<string> {
 }
 
 function mapRawToUnit(row: RawUnitWithTraits): Unit {
-  const traits = row.traits?.map(ut => ({
-    name: ut.trait.name,
-    category: ut.trait.category
-  })) || [];
-  
-  return new Unit(
-    row.id,
-    row.name,
-    row.cost,
-    traits,
-    row.baseStats,
-    row.ability,
-    row.role
-  );
+  const traits =
+    row.traits?.map((ut) => ({
+      name: ut.trait.name,
+      category: ut.trait.category,
+    })) || [];
+
+  return new Unit(row.id, row.name, row.cost, traits, row.baseStats, row.ability, row.role);
 }
 
 export class UnitsService {
@@ -33,22 +26,22 @@ export class UnitsService {
     const setId = await getSetId();
 
     const where: Prisma.UnitWhereInput = { setId };
-    
+
     if (search) {
       where.name = { contains: search, mode: "insensitive" };
     }
-    
+
     if (cost !== undefined) {
       where.cost = cost;
     }
-    
+
     if (trait) {
       where.traits = {
         some: {
           trait: {
-            name: { equals: trait, mode: "insensitive" }
-          }
-        }
+            name: { equals: trait, mode: "insensitive" },
+          },
+        },
       };
     }
 
@@ -56,10 +49,10 @@ export class UnitsService {
       traits: {
         include: {
           trait: {
-            select: { name: true, category: true }
-          }
-        }
-      }
+            select: { name: true, category: true },
+          },
+        },
+      },
     };
 
     const orderBy: Prisma.UnitOrderByWithRelationInput[] = [];
@@ -78,25 +71,25 @@ export class UnitsService {
     const items = rows.map(mapRawToUnit);
     const nextOffset = rows.length === limit ? offset + limit : undefined;
     const pageInfo = new PageInfo(nextOffset, nextOffset !== undefined);
-    
+
     return new UnitsListResponse(items, pageInfo, { set: "set15" });
   }
 
   async getById(id: string): Promise<Unit | null> {
     const setId = await getSetId();
-    
-    const row = await prisma.unit.findFirst({
+
+    const row = (await prisma.unit.findFirst({
       where: { id, setId },
       include: {
         traits: {
           include: {
             trait: {
-              select: { name: true, category: true }
-            }
-          }
-        }
-      }
-    }) as unknown as RawUnitWithTraits | null;
+              select: { name: true, category: true },
+            },
+          },
+        },
+      },
+    })) as unknown as RawUnitWithTraits | null;
 
     return row ? mapRawToUnit(row) : null;
   }

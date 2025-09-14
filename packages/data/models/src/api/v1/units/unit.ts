@@ -11,6 +11,6 @@ export class Unit {
     public traits: UnitTrait[],
     public baseStats: Record<string, unknown>,
     public ability: Record<string, unknown> | null,
-    public role?: string | null
+    public role?: string | null,
   ) {}
 }

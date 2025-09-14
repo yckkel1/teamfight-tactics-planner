@@ -21,8 +21,8 @@ export class UnitsController {
   getById = async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
     const unit = await this.svc.getById(req.params.id);
     if (!unit) {
-      return reply.code(404).send({ 
-        error: { code: "NotFound", message: "Unit not found" } 
+      return reply.code(404).send({
+        error: { code: "NotFound", message: "Unit not found" },
       });
     }
     return reply.send(unit);
