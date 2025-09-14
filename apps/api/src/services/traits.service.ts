@@ -26,7 +26,11 @@ export class TraitsService {
     const setId = await getSetId();
 
     const where: Prisma.TraitWhereInput = { setId };
-    if (search) where.name = { contains: search, mode: "insensitive" };
+
+    // Remove mode for SQLite compatibility
+    if (search) {
+      where.name = { contains: search };
+    }
 
     const include: Prisma.TraitInclude = {
       _count: { select: { unitTraits: true } },
@@ -38,13 +42,19 @@ export class TraitsService {
     else if (sort === "unitCount") orderBy.push({ unitTraits: { _count: order } });
     orderBy.push({ id: "asc" });
 
-    const rows = (await prisma.trait.findMany({
+    let rows = (await prisma.trait.findMany({
       where,
       include,
       orderBy,
       skip: offset,
       take: limit,
     })) as unknown as RawTraitWithCounts[];
+
+    // Manual case-insensitive filtering for SQLite
+    if (search) {
+      const searchLower = search.toLowerCase();
+      rows = rows.filter((trait) => trait.name.toLowerCase().includes(searchLower));
+    }
 
     const items = rows.map(mapRawToTrait);
     const nextOffset = rows.length === limit ? offset + limit : undefined;
