@@ -1,20 +1,16 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { QueryProvider } from './providers'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { QueryProvider } from "./providers";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'TFT Team Planner',
-  description: 'Build your perfect Teamfight Tactics compositions for Set 15',
-}
+  title: "TFT Team Planner",
+  description: "Build your perfect Teamfight Tactics compositions for Set 15",
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -29,21 +25,25 @@ export default function RootLayout({
                   <h1 className="text-xl font-bold">Team Planner</h1>
                 </div>
                 <nav className="flex items-center gap-6">
-                  <a href="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  <a
+                    href="/"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Traits
                   </a>
-                  <a href="/builder" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  <a
+                    href="/builder"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Team Builder
                   </a>
                 </nav>
               </div>
             </header>
-            <main className="container mx-auto px-4 py-8">
-              {children}
-            </main>
+            <main className="container mx-auto px-4 py-8">{children}</main>
           </div>
         </QueryProvider>
       </body>
     </html>
-  )
+  );
 }

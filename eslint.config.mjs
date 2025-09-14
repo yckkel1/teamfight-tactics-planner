@@ -11,10 +11,15 @@ export default [
       "**/node_modules/**",
       "**/generated/**",
       "**/prisma/*.js",
+      "**/.next/**",
+      "**/*.config.js",
     ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended, // non type-checked preset
-  { files: ["**/*.{ts,tsx,js,jsx}"], rules: { "no-console": "off" } },
+  {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    rules: { "no-console": "off", "@typescript-eslint/no-explicit-any": "off" },
+  },
   eslintConfigPrettier,
 ];

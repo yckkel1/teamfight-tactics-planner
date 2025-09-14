@@ -3,6 +3,7 @@
 
 # Env
 .env
+.env.*
 .env.local
 .env.*.local
 
@@ -46,3 +47,5 @@ out/
 apps/api/dist
 packages/data/models/dist
 apps/api/prisma/.data
+
+apps/web/next-env.d.ts
