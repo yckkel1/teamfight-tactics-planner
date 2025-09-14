@@ -1,4 +1,3 @@
-// apps/api/src/controllers/units.controller.ts
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { UnitsQuerySchema, UnitsQuery } from "@data/models";
 import { UnitsService } from "../services/units.service";

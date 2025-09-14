@@ -27,8 +27,11 @@ export class UnitsService {
 
     const where: Prisma.UnitWhereInput = { setId };
 
+    // SQLite case-insensitive search - we'll filter after the query
+    // or use a different approach
     if (search) {
-      where.name = { contains: search, mode: "insensitive" };
+      // For SQLite, we'll use contains without mode
+      where.name = { contains: search };
     }
 
     if (cost !== undefined) {
@@ -39,7 +42,8 @@ export class UnitsService {
       where.traits = {
         some: {
           trait: {
-            name: { equals: trait, mode: "insensitive" },
+            // Remove mode for SQLite compatibility
+            name: { contains: trait },
           },
         },
       };
@@ -60,13 +64,26 @@ export class UnitsService {
     else if (sort === "cost") orderBy.push({ cost: order });
     orderBy.push({ id: "asc" });
 
-    const rows = (await prisma.unit.findMany({
+    let rows = (await prisma.unit.findMany({
       where,
       include,
       orderBy,
       skip: offset,
       take: limit,
     })) as unknown as RawUnitWithTraits[];
+
+    // Manual case-insensitive filtering for SQLite
+    if (search) {
+      const searchLower = search.toLowerCase();
+      rows = rows.filter((unit) => unit.name.toLowerCase().includes(searchLower));
+    }
+
+    if (trait) {
+      const traitLower = trait.toLowerCase();
+      rows = rows.filter((unit) =>
+        unit.traits?.some((ut) => ut.trait.name.toLowerCase().includes(traitLower)),
+      );
+    }
 
     const items = rows.map(mapRawToUnit);
     const nextOffset = rows.length === limit ? offset + limit : undefined;
