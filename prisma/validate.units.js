@@ -15,7 +15,7 @@ const isNum = (v) => typeof v === "number" && Number.isFinite(v);
 const isNumArr3 = (v) => Array.isArray(v) && v.length === 3 && v.every(isNum);
 const isSnake = (k) => /^[a-z][a-z0-9_]*$/.test(k);
 const isDamageKeyOK = (k) =>
-  /^(dmg_(ad|ap|magic|true|mixed)_(flat|ratio_pct|hp_pct)|dmg_hp_pct|dmg_target_hp_pct)$/.test(k);
+  /^(dmg_(ad|ap|magic|true|mixed)_(flat|ratio_pct|hp_pct)|dmg_hp_pct|dmg_target_hp_pct|dmg_falloff_per_hit_pct)$/.test(k);
 
 const allowedNumericKeys = new Set([
   "as_bonus_pct",
