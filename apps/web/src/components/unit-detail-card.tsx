@@ -313,9 +313,9 @@ export function UnitDetailCard({ unit, viewMode }: { unit: Unit, viewMode: 'grid
             </CardContent>
             </Card>
             {/* Add this hover overlay for grid view */}
-            {isHovered && (
+            {/* isHovered && (
                 <div className="absolute z-[100] top-0 left-0 right-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4">
-                    {/* Full ability details here */}
+                    { Full ability details here }
                     {unit.ability && (
                         <div className="space-y-2">
                             <div className="font-semibold text-blue-600 dark:text-blue-400 text-sm">
@@ -329,7 +329,7 @@ export function UnitDetailCard({ unit, viewMode }: { unit: Unit, viewMode: 'grid
                         </div>
                     )}
                 </div>
-            )}
+            ) */}
       </div>
     )
   }

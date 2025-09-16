@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Badge } from './ui/badge'
 import { Card, CardContent } from './ui/card'
 import { cn } from '@/lib/utils'
-import { Sword, Shield, Heart, Zap, Target, Info } from 'lucide-react'
+import { Sword, Shield, Heart, Zap, Target, Info, Clock } from 'lucide-react'
 
 interface Unit {
   id: string
@@ -181,57 +181,56 @@ export function UnitCardWithDetails({ unit, className, onClick }: UnitCardWithDe
             {baseStats && (
               <div className="mb-4">
                 <div className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">BASE STATS</div>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Heart className="h-3 w-3 text-red-500" />
-                        <span className="text-gray-600 dark:text-gray-400">Health</span>
-                      </div>
-                      <span className="font-mono text-xs">{baseStats.hp.join(' / ')}</span>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Heart className="h-3 w-3 text-red-500" />
+                      <span className="text-gray-900 dark:text-gray-100">Health</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Sword className="h-3 w-3 text-orange-500" />
-                        <span className="text-gray-600 dark:text-gray-400">Attack</span>
-                      </div>
-                      <span className="font-mono text-xs">{baseStats.ad.join(' / ')}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Target className="h-3 w-3 text-green-500" />
-                        <span className="text-gray-600 dark:text-gray-400">Range</span>
-                      </div>
-                      <span className="font-mono text-xs">{baseStats.range}</span>
-                    </div>
+                    <span className="font-mono text-[10px] text-right text-gray-900 dark:text-gray-100">{baseStats.hp.join('/')}</span>
                   </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Shield className="h-3 w-3 text-blue-500" />
-                        <span className="text-gray-600 dark:text-gray-400">Armor</span>
-                      </div>
-                      <span className="font-mono text-xs">{baseStats.armor}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Sword className="h-3 w-3 text-orange-500" />
+                      <span className="text-gray-900 dark:text-gray-100">Attack</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Zap className="h-3 w-3 text-purple-500" />
-                        <span className="text-gray-600 dark:text-gray-400">Magic Resist</span>
-                      </div>
-                      <span className="font-mono text-xs">{baseStats.mr}</span>
+                    <span className="font-mono text-[10px] text-right text-gray-900 dark:text-gray-100">{baseStats.ad.join('/')}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Shield className="h-3 w-3 text-blue-500" />
+                      <span className="text-gray-900 dark:text-gray-100">Armor</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Attack Speed</span>
-                      <span className="font-mono text-xs">{baseStats.attackSpeed}</span>
+                    <span className="font-mono text-xs text-right text-gray-900 dark:text-gray-100">{baseStats.armor}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Zap className="h-3 w-3 text-purple-500" />
+                      <span className="text-gray-900 dark:text-gray-100">Magic Resist</span>
                     </div>
+                    <span className="font-mono text-xs text-right text-gray-900 dark:text-gray-100">{baseStats.mr}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-3 w-3 text-yellow-500" />
+                      <span className="text-gray-900 dark:text-gray-100">Attack Speed</span>
+                    </div>
+                    <span className="font-mono text-xs text-right text-gray-900 dark:text-gray-100">{baseStats.attackSpeed}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Target className="h-3 w-3 text-green-500" />
+                      <span className="text-gray-900 dark:text-gray-100">Range</span>
+                    </div>
+                    <span className="font-mono text-xs text-right text-gray-900 dark:text-gray-100">{baseStats.range}</span>
                   </div>
                 </div>
                 
                 {baseStats.mana && (
                   <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Mana</span>
-                      <span className="font-mono text-xs">
+                      <span className="text-gray-900 dark:text-gray-100">Mana</span>
+                      <span className="font-mono text-xs text-right text-gray-900 dark:text-gray-100">
                         {baseStats.mana.start} / {baseStats.mana.max}
                       </span>
                     </div>
@@ -267,7 +266,7 @@ export function UnitCardWithDetails({ unit, className, onClick }: UnitCardWithDe
                     </div>
                   )}
                   
-                  {/* Key Stats */}
+                  {/* Key Stats
                   {unit.ability.stats && Object.keys(unit.ability.stats).length > 0 && (
                     <div className="mt-3">
                       <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Key Values:</div>
@@ -286,7 +285,7 @@ export function UnitCardWithDetails({ unit, className, onClick }: UnitCardWithDe
                           ))}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             )}
