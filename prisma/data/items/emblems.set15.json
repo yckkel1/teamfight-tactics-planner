@@ -1,0 +1,10 @@
+[
+  {
+    "slug": "duelist-emblem",
+    "name": "Duelist Emblem",
+    "components": ["recurve-bow", "frying-pan"],
+    "grants_trait": "Duelist",
+    "tags": ["emblem", "trait"],
+    "text": ""
+  }
+]

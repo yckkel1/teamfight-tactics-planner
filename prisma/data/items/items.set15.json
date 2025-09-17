@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "guinsoos-rageblade",
+    "name": "Guinsoo's Rageblade",
+    "components": ["recurve-bow", "needlessly-large-rod"],
+    "tags": ["carry", "attack-speed", "on-hit"],
+    "stats": { "as_pct": 25, "on_hit_magic_flat": 15 },
+    "unique": false,
+    "text": "+25% AS. Attacks deal +15 bonus magic damage."
+  },
+  {
+    "slug": "warmogs-armor",
+    "name": "Warmog's Armor",
+    "components": ["giants-belt", "giants-belt"],
+    "tags": ["tank", "hp"],
+    "stats": { "hp_flat": 650 },
+    "unique": false,
+    "text": "+650 Health."
+  },
+  {
+    "slug": "bramble-vest",
+    "name": "Bramble Vest",
+    "components": ["chain-vest", "chain-vest"],
+    "tags": ["tank", "armor", "anti-crit"],
+    "stats": { "armor_flat": 70 },
+    "unique": true,
+    "text": "+70 Armor. Negates bonus damage from critical strikes."
+  }
+]
