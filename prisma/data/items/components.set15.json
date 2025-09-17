@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "recurve-bow",
+    "name": "Recurve Bow",
+    "tags": ["component", "attack-speed"],
+    "stats": { "as_pct": 15 },
+    "text": "+15% Attack Speed"
+  },
+  {
+    "slug": "needlessly-large-rod",
+    "name": "Needlessly Large Rod",
+    "tags": ["component", "ap"],
+    "stats": { "ap_flat": 20 },
+    "text": "+20 Ability Power"
+  },
+  {
+    "slug": "chain-vest",
+    "name": "Chain Vest",
+    "tags": ["component", "armor"],
+    "stats": { "armor_flat": 20 },
+    "text": "+20 Armor"
+  },
+  {
+    "slug": "giants-belt",
+    "name": "Giant's Belt",
+    "tags": ["component", "hp"],
+    "stats": { "hp_flat": 150 },
+    "text": "+150 Health"
+  },
+  {
+    "slug": "spatula",
+    "name": "Spatula",
+    "tags": ["component", "spatula"],
+    "stats": {},
+    "text": "It must do something…"
+  },
+  {
+    "slug": "frying-pan",
+    "name": "Frying Pan",
+    "tags": ["component", "frying-pan"],
+    "stats": {},
+    "text": "It must do something…"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "manazane",
+    "name": "Manazane",
+    "tags": ["artifact", "mana"],
+    "stats": { "mana_on_cast_flat": 20 },
+    "text": "After casting, restore 20 Mana."
+  }
+]

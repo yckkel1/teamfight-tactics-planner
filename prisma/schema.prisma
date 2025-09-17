@@ -18,53 +18,55 @@ model GameSet {
   patches    Patch[]
   traits     Trait[]
   units      Unit[]
+  Item       Item[]
 }
 
 model Patch {
-  id         String  @id @default(cuid())
+  id         String    @id @default(cuid())
   setId      String
   semver     String
   releasedAt DateTime?
-  set        GameSet @relation(fields: [setId], references: [id])
+  set        GameSet   @relation(fields: [setId], references: [id])
 
   @@unique([setId, semver])
   @@index([setId])
 }
 
 model Trait {
-  id          String   @id @default(cuid())
+  id          String      @id @default(cuid())
   setId       String
   name        String
   category    String?
   description String?
-  set         GameSet  @relation(fields: [setId], references: [id])
+  set         GameSet     @relation(fields: [setId], references: [id])
   tiers       TraitTier[]
   unitTraits  UnitTrait[]
+  Item        Item[]
 
   @@unique([setId, name])
   @@index([setId])
 }
 
 model TraitTier {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   traitId  String
   minUnits Int
   note     String?
   effects  Json
-  trait    Trait  @relation(fields: [traitId], references: [id])
+  trait    Trait   @relation(fields: [traitId], references: [id])
 
   @@index([traitId, minUnits])
 }
 
 model Unit {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   setId     String
   name      String
   cost      Int
   role      String?
   baseStats Json
   ability   Json?
-  set       GameSet  @relation(fields: [setId], references: [id])
+  set       GameSet     @relation(fields: [setId], references: [id])
   traits    UnitTrait[]
 
   @@unique([setId, name])
@@ -74,10 +76,69 @@ model Unit {
 model UnitTrait {
   unitId  String
   traitId String
-  unit    Unit  @relation(fields: [unitId], references: [id])
-  trait   Trait @relation(fields: [traitId], references: [id])
+  unit    Unit   @relation(fields: [unitId], references: [id])
+  trait   Trait  @relation(fields: [traitId], references: [id])
 
   @@id([unitId, traitId])
   @@index([traitId])
 }
 
+// ──────────────────────────────────────────────────────────────────────────────
+// Items (components, completed, artifacts, radiant, emblems)
+// ──────────────────────────────────────────────────────────────────────────────
+
+enum ItemKind {
+  COMPONENT
+  COMPLETED
+  ARTIFACT
+  RADIANT
+  EMBLEM
+}
+
+model Item {
+  id       String   @id @default(cuid())
+  setId    String
+  kind     ItemKind
+  slug     String
+  name     String
+  tags     Json
+  stats    Json
+  text     String?
+  isUnique Boolean  @default(false)
+
+  // Relations
+  set GameSet @relation(fields: [setId], references: [id])
+
+  // Radiant linkage: radiant item -> base completed item
+  baseItemId  String?
+  baseItem    Item?   @relation("RadiantBase", fields: [baseItemId], references: [id])
+  radiantVars Item[]  @relation("RadiantBase")
+
+  // Emblem linkage: emblem -> trait it grants
+  grantsTraitId String?
+  grantsTrait   Trait?  @relation(fields: [grantsTraitId], references: [id])
+
+  // Component graph: parent (this item composed from components)
+  components ItemComponent[] @relation("Parent")
+  // Reverse: items that use this as a component
+  usedIn     ItemComponent[] @relation("Component")
+
+  @@unique([setId, slug])
+  @@index([setId])
+  @@index([kind])
+  @@index([baseItemId])
+  @@index([grantsTraitId])
+}
+
+model ItemComponent {
+  // parent = resultant item (COMPLETED or EMBLEM)
+  parentId    String
+  // component = source piece (COMPONENT e.g., bow, rod, spatula)
+  componentId String
+
+  parent    Item @relation("Parent", fields: [parentId], references: [id], onDelete: Cascade)
+  component Item @relation("Component", fields: [componentId], references: [id], onDelete: Cascade)
+
+  @@id([parentId, componentId])
+  @@index([componentId])
+}

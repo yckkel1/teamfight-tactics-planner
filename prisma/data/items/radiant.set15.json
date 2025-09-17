@@ -1,0 +1,10 @@
+[
+  {
+    "slug": "radiant-guinsoos-rageblade",
+    "name": "Guinsoo's Radiant Rageblade",
+    "base_slug": "guinsoos-rageblade",
+    "tags": ["carry", "attack-speed", "on-hit", "radiant"],
+    "stats_overrides": { "as_pct": 40, "on_hit_magic_flat": 25 },
+    "text_overrides": "+40% AS. Attacks deal +25 bonus magic damage."
+  }
+]
