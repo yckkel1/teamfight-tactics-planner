@@ -1,4 +1,4 @@
-// apps/web/src/app/layout.tsx
+// apps/web/src/app/layout.tsx - Updated navigation
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -42,6 +42,12 @@ export default function RootLayout({
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Champions
+                  </Link>
+                  <Link 
+                    href="/items" 
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Items
                   </Link>
                   <Link 
                     href="/builder" 

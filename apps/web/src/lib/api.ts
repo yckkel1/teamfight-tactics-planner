@@ -1,3 +1,4 @@
+// apps/web/src/lib/api.ts - Updated with items function
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
 
 export async function fetchTraits(
@@ -37,5 +38,26 @@ export async function fetchUnits(
 
   const response = await fetch(url);
   if (!response.ok) throw new Error("Failed to fetch units");
+  return response.json();
+}
+
+export async function fetchItems(
+  params: {
+    search?: string;
+    category?: string;
+    tag?: string;
+    sort?: string;
+    order?: string;
+    limit?: number;
+    offset?: number;
+  } = {},
+) {
+  const url = new URL(`${API_BASE}/items`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined) url.searchParams.set(key, String(value));
+  });
+
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Failed to fetch items");
   return response.json();
 }
