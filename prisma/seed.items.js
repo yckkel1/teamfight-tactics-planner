@@ -65,7 +65,66 @@ async function runValidators() {
   ];
   writeFileSync(join(OUT_DIR, "catalog.json"), JSON.stringify(catalog, null, 2));
 
+  // Insert items into database
+  const allItems = [
+    ...components.map((c) => ({
+      setId: set.id,
+      kind: "COMPONENT",
+      slug: c.slug,
+      name: c.name,
+      tags: c.tags || [],
+      stats: c.stats || {},
+      text: c.text || null,
+      isUnique: c.unique || false,
+    })),
+    ...items.map((i) => ({
+      setId: set.id,
+      kind: "COMPLETED",
+      slug: i.slug,
+      name: i.name,
+      tags: i.tags || [],
+      stats: i.stats || {},
+      text: i.text || null,
+      isUnique: i.unique || false,
+    })),
+    ...artifacts.map((a) => ({
+      setId: set.id,
+      kind: "ARTIFACT",
+      slug: a.slug,
+      name: a.name,
+      tags: a.tags || [],
+      stats: a.stats || {},
+      text: a.text || null,
+      isUnique: a.unique || false,
+    })),
+    ...radiant.map((r) => ({
+      setId: set.id,
+      kind: "RADIANT",
+      slug: r.slug,
+      name: r.name,
+      tags: r.tags || [],
+      stats: r.stats_overrides || {},
+      text: r.text_overrides || null,
+      isUnique: true,
+    })),
+    ...emblemsEnriched.map((e) => ({
+      setId: set.id,
+      kind: "EMBLEM",
+      slug: e.slug,
+      name: e.name,
+      tags: e.tags || [],
+      stats: {},
+      text: e.text || null,
+      isUnique: true,
+    })),
+  ];
+
+  // Clear existing items and insert new ones
+  await prisma.item.deleteMany({ where: { setId: set.id } });
+  await prisma.item.createMany({ data: allItems });
+
   console.log(`Wrote caches → ${OUT_DIR}`);
+  console.log(`Items seeded to database: ${allItems.length}`);
 
   await prisma.$disconnect();
 })().catch(async (e) => {

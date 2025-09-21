@@ -1,8 +1,10 @@
+// apps/api/src/server.ts - Updated version
 import Fastify from "fastify";
 import sensible from "@fastify/sensible";
 import cors from "@fastify/cors";
 import { traitsRoutes } from "./routes/traits.routes.js";
 import { unitsRoutes } from "./routes/units.routes.js";
+import { itemsRoutes } from "./routes/items.routes.js";
 
 const app = Fastify({ logger: true });
 await app.register(sensible);
@@ -22,6 +24,7 @@ await app.register(
   async (instance) => {
     instance.register(traitsRoutes);
     instance.register(unitsRoutes);
+    instance.register(itemsRoutes);
   },
   { prefix: "/api/v1" },
 );
@@ -30,6 +33,7 @@ await app.register(
   async (instance) => {
     instance.register(traitsRoutes);
     instance.register(unitsRoutes);
+    instance.register(itemsRoutes);
   },
   { prefix: "/list" },
 );
