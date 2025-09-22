@@ -13,8 +13,8 @@ import { cn } from '@/lib/utils'
 export function ItemsExplorer() {
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>()
-  const [selectedTag, setSelectedTag] = useState<string | undefined>()
+  const [selectedCategory, setSelectedCategory] = useState<string>('item') // Default to completed items
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | undefined>()
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,35 +30,15 @@ export function ItemsExplorer() {
 
   // Fetch items with filters
   const { data: itemsData, isLoading: itemsLoading, error: itemsError } = useQuery({
-    queryKey: ['items', { search: debouncedSearch, category: selectedCategory, tag: selectedTag, limit: 200 }],
+    queryKey: ['items', { search: debouncedSearch, category: selectedSubCategory || selectedCategory, limit: 200 }],
     queryFn: () => fetchItems({ 
       search: debouncedSearch, 
-      category: selectedCategory, 
-      tag: selectedTag, 
+      category: selectedSubCategory || selectedCategory,
       limit: 200 
     })
   })
 
   const items = itemsData?.items || []
-
-  // Extract unique categories and tags from items
-  const categories = useMemo(() => {
-    const cats = new Set<string>()
-    items.forEach((item: any) => {
-      if (item.kind) cats.add(item.kind)
-    })
-    return Array.from(cats).sort()
-  }, [items])
-
-  const tags = useMemo(() => {
-    const tagSet = new Set<string>()
-    items.forEach((item: any) => {
-      if (item.tags) {
-        item.tags.forEach((tag: string) => tagSet.add(tag))
-      }
-    })
-    return Array.from(tagSet).sort()
-  }, [items])
 
   if (itemsLoading) {
     return (
@@ -105,53 +85,72 @@ export function ItemsExplorer() {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            {/* Category Filter */}
+            {/* Primary Category Filter */}
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Category:</span>
-              <div className="flex gap-1 flex-wrap">
+              <div className="flex gap-1">
                 <Badge
-                  variant={selectedCategory === undefined ? "default" : "outline"}
+                  variant={selectedCategory === 'component' ? "default" : "outline"}
                   className="cursor-pointer"
-                  onClick={() => setSelectedCategory(undefined)}
+                  onClick={() => {
+                    setSelectedCategory('component')
+                    setSelectedSubCategory(undefined)
+                  }}
                 >
-                  All
+                  Components
                 </Badge>
-                {categories.map(category => (
-                  <Badge
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    className="cursor-pointer capitalize"
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </Badge>
-                ))}
+                <Badge
+                  variant={selectedCategory === 'item' ? "default" : "outline"}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setSelectedCategory('item')
+                    setSelectedSubCategory(undefined)
+                  }}
+                >
+                  Items
+                </Badge>
+                <Badge
+                  variant={selectedCategory === 'emblem' ? "default" : "outline"}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setSelectedCategory('emblem')
+                    setSelectedSubCategory(undefined)
+                  }}
+                >
+                  Emblems
+                </Badge>
               </div>
             </div>
 
-            {/* Tag Filter */}
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Tag:</span>
-              <div className="flex gap-1 flex-wrap">
-                <Badge
-                  variant={selectedTag === undefined ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => setSelectedTag(undefined)}
-                >
-                  All
-                </Badge>
-                {tags.slice(0, 10).map((tag: string) => (
+            {/* Secondary Filter for Items */}
+            {selectedCategory === 'item' && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Type:</span>
+                <div className="flex gap-1">
                   <Badge
-                    key={tag}
-                    variant={selectedTag === tag ? "default" : "outline"}
+                    variant={!selectedSubCategory ? "default" : "outline"}
                     className="cursor-pointer"
-                    onClick={() => setSelectedTag(tag)}
+                    onClick={() => setSelectedSubCategory(undefined)}
                   >
-                    {tag}
+                    Completed
                   </Badge>
-                ))}
+                  <Badge
+                    variant={selectedSubCategory === 'artifact' ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setSelectedSubCategory('artifact')}
+                  >
+                    Artifact
+                  </Badge>
+                  <Badge
+                    variant={selectedSubCategory === 'radiant' ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setSelectedSubCategory('radiant')}
+                  >
+                    Radiant
+                  </Badge>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* View Mode */}
             <div className="flex items-center gap-2 ml-auto">

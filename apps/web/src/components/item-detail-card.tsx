@@ -1,10 +1,9 @@
 'use client'
 
-import { useState } from 'react'
 import { Badge } from './ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { cn } from '@/lib/utils'
-import { Package, Star, Sword, Shield, Heart, Zap, ChevronDown, ChevronRight, Sparkles } from 'lucide-react'
+import { Package, Star, Sword, Shield, Sparkles } from 'lucide-react'
 
 interface Item {
   slug: string
@@ -27,9 +26,6 @@ interface ItemDetailCardProps {
 }
 
 export function ItemDetailCard({ item, viewMode }: ItemDetailCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-
   const getCategoryColor = (kind: string) => {
     const colors = {
       component: 'bg-gray-500 border-gray-600',
@@ -64,7 +60,6 @@ export function ItemDetailCard({ item, viewMode }: ItemDetailCardProps) {
     if (typeof value === 'boolean') return value ? 'Yes' : 'No'
     if (typeof value === 'string') return value
     
-    // Format numbers with appropriate suffixes
     if (key.endsWith('_pct')) return `${value}%`
     if (key.endsWith('_flat')) return `+${value}`
     if (key.endsWith('_sec')) return `${value}s`
@@ -83,68 +78,63 @@ export function ItemDetailCard({ item, viewMode }: ItemDetailCardProps) {
   if (viewMode === 'list') {
     return (
       <Card className="cursor-pointer hover:shadow-md transition-shadow">
-        <CardHeader 
-          className="pb-3"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className={cn(
-                "h-12 w-12 rounded-lg border-2 flex items-center justify-center text-white font-bold",
-                getCategoryColor(item.kind)
-              )}>
-                {getCategoryIcon(item.kind)}
-              </div>
-              
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-lg">{item.name}</CardTitle>
-                  {item.unique && (
-                    <Badge variant="secondary" className="text-xs">Unique</Badge>
-                  )}
+        <CardContent className="p-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* LEFT SIDE */}
+            <div>
+              {/* Header section */}
+              <div className="flex items-center gap-4 mb-4">
+                <div className={cn(
+                  "h-12 w-12 rounded-lg border-2 flex items-center justify-center text-white font-bold",
+                  getCategoryColor(item.kind)
+                )}>
+                  {getCategoryIcon(item.kind)}
                 </div>
-                <p className="text-sm text-muted-foreground capitalize">{item.kind}</p>
+                
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-lg">{item.name}</CardTitle>
+                    {item.unique && (
+                      <Badge variant="secondary" className="text-xs">Unique</Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground capitalize">{item.kind}</p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-4">
-              {/* Quick Stats Preview */}
+              {/* Tags */}
+              <div className="flex flex-wrap gap-1 mb-4">
+                {item.tags.map((tag) => (
+                  <Badge 
+                    key={tag} 
+                    variant="outline"
+                    className="text-xs"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+
+              {/* Stats */}
               {Object.keys(getDisplayStats()).length > 0 && (
-                <div className="text-sm text-muted-foreground">
-                  {Object.keys(getDisplayStats()).length} stat{Object.keys(getDisplayStats()).length !== 1 ? 's' : ''}
+                <div className="mb-4">
+                  <h4 className="font-semibold text-sm mb-2">Stats</h4>
+                  <div className="space-y-1 text-sm">
+                    {Object.entries(getDisplayStats()).map(([key, value]) => (
+                      <div key={key} className="flex justify-between">
+                        <span className="text-muted-foreground">{formatStatName(key)}</span>
+                        <span className="font-mono text-xs">{formatStatValue(key, value)}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              )}
-            </div>
-          </div>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1 mt-2">
-            {item.tags.map((tag) => (
-              <Badge 
-                key={tag} 
-                variant="outline"
-                className="text-xs"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </CardHeader>
-
-        {isExpanded && (
-          <CardContent className="pt-0 border-t">
-            <div className="space-y-4">
               {/* Components */}
               {item.components && (
-                <div>
+                <div className="mb-4">
                   <h4 className="font-semibold text-sm mb-2">Components</h4>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1 flex-wrap">
                     {item.components.map((comp) => (
                       <Badge key={comp} variant="secondary" className="text-xs">
                         {comp.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -158,26 +148,13 @@ export function ItemDetailCard({ item, viewMode }: ItemDetailCardProps) {
               {item.grants_trait && (
                 <div>
                   <h4 className="font-semibold text-sm mb-2">Grants Trait</h4>
-                  <Badge variant="class" className="text-sm">{item.grants_trait}</Badge>
+                  <Badge variant="class" className="text-xs">{item.grants_trait}</Badge>
                 </div>
               )}
+            </div>
 
-              {/* Stats */}
-              {Object.keys(getDisplayStats()).length > 0 && (
-                <div>
-                  <h4 className="font-semibold text-sm mb-2">Stats</h4>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {Object.entries(getDisplayStats()).map(([key, value]) => (
-                      <div key={key} className="flex justify-between">
-                        <span className="text-muted-foreground">{formatStatName(key)}</span>
-                        <span className="font-mono text-xs">{formatStatValue(key, value)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Description */}
+            {/* RIGHT SIDE - Description aligned with header */}
+            <div className="pt-2">
               {getDisplayText() && (
                 <div>
                   <h4 className="font-semibold text-sm mb-2">Description</h4>
@@ -187,122 +164,110 @@ export function ItemDetailCard({ item, viewMode }: ItemDetailCardProps) {
                 </div>
               )}
             </div>
-          </CardContent>
-        )}
+          </div>
+        </CardContent>
       </Card>
     )
   }
 
-  // Grid view (compact)
   return (
-    <div 
-      className="relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Card className="cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-200">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-base truncate flex-1">{item.name}</CardTitle>
-            <div className="flex items-center gap-1">
-              {item.unique && (
-                <Star className="h-3 w-3 text-yellow-500" />
+    <Card className="cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-200 h-full">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base truncate flex-1">{item.name}</CardTitle>
+          <div className="flex items-center gap-1">
+            {item.unique && (
+              <Star className="h-3 w-3 text-yellow-500" />
+            )}
+            <Badge 
+              className={cn(
+                "h-6 w-6 p-0 rounded-full text-xs flex items-center justify-center text-white font-bold",
+                getCategoryColor(item.kind)
               )}
-              <Badge 
-                className={cn(
-                  "h-6 w-6 p-0 rounded-full text-xs flex items-center justify-center text-white font-bold",
-                  getCategoryColor(item.kind)
-                )}
-              >
-                {getCategoryIcon(item.kind)}
-              </Badge>
-            </div>
-          </div>
-          
-          <p className="text-xs text-muted-foreground capitalize">{item.kind}</p>
-          
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1">
-            {item.tags.slice(0, 3).map((tag) => (
-              <Badge 
-                key={tag} 
-                variant="outline"
-                className="text-xs px-1.5 py-0"
-              >
-                {tag}
-              </Badge>
-            ))}
-            {item.tags.length > 3 && (
-              <span className="text-xs text-muted-foreground">+{item.tags.length - 3}</span>
-            )}
-          </div>
-        </CardHeader>
-
-        <CardContent className="pt-0">
-          {/* Quick Stats */}
-          {Object.keys(getDisplayStats()).length > 0 && (
-            <div className="text-xs text-muted-foreground">
-              {Object.keys(getDisplayStats()).length} stat{Object.keys(getDisplayStats()).length !== 1 ? 's' : ''}
-            </div>
-          )}
-
-          {/* Components preview */}
-          {item.components && (
-            <div className="text-xs text-primary font-medium mt-1">
-              {item.components.length} component{item.components.length !== 1 ? 's' : ''}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Hover overlay for grid view }
-      {isHovered && (
-        <div className="absolute z-[100] top-0 left-0 right-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4 min-w-[300px]">
-          <div className="space-y-3">
-            { Header }
-            <div className="flex items-center justify-between">
-              <h3 className="font-bold text-gray-900 dark:text-gray-100">{item.name}</h3>
-              <Badge variant="outline" className="text-xs capitalize">{item.kind}</Badge>
-            </div>
-
-            { Description }
-            {getDisplayText() && (
-              <div className="text-xs leading-relaxed text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                {getDisplayText()}
-              </div>
-            )}
-
-            { Stats }
-            {Object.keys(getDisplayStats()).length > 0 && (
-              <div>
-                <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Stats:</div>
-                <div className="space-y-1">
-                  {Object.entries(getDisplayStats()).slice(0, 4).map(([key, value]) => (
-                    <div key={key} className="flex justify-between text-xs">
-                      <span className="text-gray-600 dark:text-gray-400">{formatStatName(key)}</span>
-                      <span className="font-mono text-gray-900 dark:text-gray-100">{formatStatValue(key, value)}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            { Components }
-            {item.components && (
-              <div>
-                <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Components:</div>
-                <div className="flex gap-1 flex-wrap">
-                  {item.components.map((comp) => (
-                    <Badge key={comp} variant="secondary" className="text-xs">
-                      {comp.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
+            >
+              {getCategoryIcon(item.kind)}
+            </Badge>
           </div>
         </div>
-      )*/}
-    </div>
+        
+        <p className="text-xs text-muted-foreground capitalize">{item.kind}</p>
+        
+        <div className="flex flex-wrap gap-1">
+          {item.tags.slice(0, 3).map((tag) => (
+            <Badge 
+              key={tag} 
+              variant="outline"
+              className="text-xs px-1.5 py-0"
+            >
+              {tag}
+            </Badge>
+          ))}
+          {item.tags.length > 3 && (
+            <span className="text-xs text-muted-foreground">+{item.tags.length - 3}</span>
+          )}
+        </div>
+      </CardHeader>
+
+      <CardContent className="pt-0 space-y-3 flex-1">
+        {getDisplayText() && (
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Description</h5>
+            <div className="text-xs text-muted-foreground leading-relaxed bg-muted/20 p-2 rounded">
+              {getDisplayText()}
+            </div>
+          </div>
+        )}
+
+        {Object.keys(getDisplayStats()).length > 0 && (
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Stats</h5>
+            <div className="grid grid-cols-1 gap-1 text-xs">
+              {Object.entries(getDisplayStats()).slice(0, 4).map(([key, value]) => (
+                <div key={key} className="flex justify-between">
+                  <span className="text-muted-foreground">{formatStatName(key)}</span>
+                  <span className="font-mono text-right">{formatStatValue(key, value)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {item.components && (
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Components</h5>
+            <div className="flex gap-1 flex-wrap">
+              {item.components.map((comp) => (
+                <Badge key={comp} variant="secondary" className="text-xs">
+                  {comp.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {item.grants_trait && (
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Grants Trait</h5>
+            <Badge variant="class" className="text-xs">{item.grants_trait}</Badge>
+          </div>
+        )}
+
+        <div>
+          <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Recommended For</h5>
+          <div className="text-xs text-muted-foreground italic">
+            Coming soon...
+          </div>
+        </div>
+
+        {item.kind === 'component' && (
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Builds Into</h5>
+            <div className="text-xs text-muted-foreground italic">
+              Coming soon...
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Badge } from './ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { cn } from '@/lib/utils'
-import { Heart, Sword, Shield, Zap, Target, ChevronDown, ChevronRight } from 'lucide-react'
+import { Heart, Sword, Shield, Zap, Target, ChevronDown, ChevronRight, Clock } from 'lucide-react'
 
 interface Unit {
   id: string
@@ -162,13 +162,16 @@ export function UnitDetailCard({ unit, viewMode }: { unit: Unit, viewMode: 'grid
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Target className="h-4 w-4 text-green-500" />
+                            <Clock className="h-4 w-4 text-yellow-500" />
                             <span>Attack Speed</span>
                           </div>
                           <span className="font-mono text-xs">{baseStats.attackSpeed}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span>Range</span>
+                          <div className="flex items-center gap-2">
+                            <Target className="h-4 w-4 text-green-500" />
+                            <span>Range</span>
+                          </div>
                           <span className="font-mono text-xs">{baseStats.range}</span>
                         </div>
                       </div>
@@ -213,7 +216,7 @@ export function UnitDetailCard({ unit, viewMode }: { unit: Unit, viewMode: 'grid
                     )}
 
                     {/* Additional ability stats if needed */}
-                    {unit.ability.stats && Object.keys(unit.ability.stats).length > 0 && (
+                    {/* unit.ability.stats && Object.keys(unit.ability.stats).length > 0 && (
                       <div className="text-xs space-y-1">
                         <div className="font-medium">Key Stats:</div>
                         <div className="grid grid-cols-1 gap-1 text-muted-foreground">
@@ -227,7 +230,7 @@ export function UnitDetailCard({ unit, viewMode }: { unit: Unit, viewMode: 'grid
                             ))}
                         </div>
                       </div>
-                    )}
+                    ) */}
                   </div>
                 </div>
               )}
@@ -238,99 +241,145 @@ export function UnitDetailCard({ unit, viewMode }: { unit: Unit, viewMode: 'grid
     )
   }
 
-  // Grid view (compact)
+// Grid view (compact)
   if (viewMode === 'grid') {
     return (
-        <div 
-            className="relative"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <Card className="cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-200">
-            <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                <CardTitle className="text-base truncate">{unit.name}</CardTitle>
-                <Badge 
-                    className={cn(
-                    "h-6 w-6 p-0 rounded-full text-xs flex items-center justify-center text-white font-bold",
-                    getCostColor(unit.cost)
-                    )}
-                >
-                    {unit.cost}
-                </Badge>
-                </div>
-                
-                {unit.role && (
-                <p className="text-xs text-muted-foreground">{unit.role}</p>
-                )}
-                
-                {/* Traits */}
-                <div className="flex flex-wrap gap-1">
-                {unit.traits.slice(0, 2).map((trait) => (
-                    <Badge 
-                    key={trait.name} 
-                    variant={trait.category === 'Class' ? 'class' : 'origin'}
-                    className="text-xs px-1.5 py-0"
-                    >
-                    {trait.name}
-                    </Badge>
-                ))}
-                {unit.traits.length > 2 && (
-                    <span className="text-xs text-muted-foreground">+{unit.traits.length - 2}</span>
-                )}
-                </div>
-            </CardHeader>
+      <Card className="cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-200 h-full flex flex-col">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base truncate">{unit.name}</CardTitle>
+            <Badge 
+              className={cn(
+                "h-6 w-6 p-0 rounded-full text-xs flex items-center justify-center text-white font-bold",
+                getCostColor(unit.cost)
+              )}
+            >
+              {unit.cost}
+            </Badge>
+          </div>
+          
+          {unit.role && (
+            <p className="text-xs text-muted-foreground">{unit.role}</p>
+          )}
+          
+          {/* Traits */}
+          <div className="flex flex-wrap gap-1">
+            {unit.traits.slice(0, 3).map((trait) => (
+              <Badge 
+                key={trait.name} 
+                variant={trait.category === 'Class' ? 'class' : 'origin'}
+                className="text-xs px-1.5 py-0"
+              >
+                {trait.name}
+              </Badge>
+            ))}
+            {unit.traits.length > 3 && (
+              <span className="text-xs text-muted-foreground">+{unit.traits.length - 3}</span>
+            )}
+          </div>
+        </CardHeader>
 
-            <CardContent className="pt-0">
-                {/* Quick Stats */}
-                {baseStats && (
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="flex items-center gap-1">
+        <CardContent className="pt-0 space-y-3 flex-1">
+          {/* Base Stats */}
+          {baseStats && (
+            <div>
+              <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Base Stats</h5>
+              <div className="grid grid-cols-2 gap-1 text-xs">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
                     <Heart className="h-3 w-3 text-red-500" />
-                    <span>{baseStats.hp[0]}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
+                    <span>HP</span>
+                  </div>
+                  <span className="font-mono text-[10px]">{baseStats.hp.join('/')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
                     <Sword className="h-3 w-3 text-orange-500" />
-                    <span>{baseStats.ad[0]}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
+                    <span>AD</span>
+                  </div>
+                  <span className="font-mono text-[10px]">{baseStats.ad.join('/')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
                     <Shield className="h-3 w-3 text-blue-500" />
-                    <span>{baseStats.armor}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
+                    <span>Armor</span>
+                  </div>
+                  <span className="font-mono text-xs">{baseStats.armor}</span>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
+                    <Zap className="h-3 w-3 text-purple-500" />
+                    <span>MR</span>
+                  </div>
+                  <span className="font-mono text-xs">{baseStats.mr}</span>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3 text-yellow-500" />
+                    <span>AS</span>
+                  </div>
+                  <span className="font-mono text-xs">{baseStats.attackSpeed}</span>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
                     <Target className="h-3 w-3 text-green-500" />
-                    <span>{baseStats.range}</span>
-                    </div>
+                    <span>Range</span>
+                  </div>
+                  <span className="font-mono text-xs">{baseStats.range}</span>
                 </div>
-                )}
+              </div>
+              {baseStats.mana && (
+                <div className="flex justify-between text-xs mt-1 pt-1 border-t">
+                  <span>Mana</span>
+                  <span className="font-mono text-xs">{baseStats.mana.start}/{baseStats.mana.max}</span>
+                </div>
+              )}
+            </div>
+          )}
 
-                {/* Ability name */}
-                {unit.ability?.name && (
-                <div className="text-xs text-primary font-medium mt-2 truncate">
-                    {unit.ability.name}
-                </div>
+          {/* Ability */}
+          {unit.ability && (
+            <div>
+              <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Ability</h5>
+              <div className="space-y-1">
+                <div className="text-xs font-medium text-primary">{unit.ability.name}</div>
+                
+                {unit.ability.tags && unit.ability.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {unit.ability.tags.slice(0, 3).map((tag: string) => (
+                      <Badge key={tag} variant="secondary" className="text-xs px-1 py-0">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 )}
-            </CardContent>
-            </Card>
-            {/* Add this hover overlay for grid view */}
-            {/* isHovered && (
-                <div className="absolute z-[100] top-0 left-0 right-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4">
-                    { Full ability details here }
-                    {unit.ability && (
-                        <div className="space-y-2">
-                            <div className="font-semibold text-blue-600 dark:text-blue-400 text-sm">
-                                {unit.ability.name}
-                            </div>
-                            {unit.ability.text && (
-                                <div className="text-xs leading-relaxed text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                                    {unit.ability.text}
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-            ) */}
-      </div>
+                
+                {unit.ability.text && (
+                  <div className="text-xs text-muted-foreground leading-tight bg-muted/20 p-2 rounded">
+                    {unit.ability.text}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Recommended Items - Placeholder */}
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Recommended Items</h5>
+            <div className="text-xs text-muted-foreground italic">
+              Coming soon...
+            </div>
+          </div>
+
+          {/* Team Combos - Placeholder */}
+          <div>
+            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Team Synergies</h5>
+            <div className="text-xs text-muted-foreground italic">
+              Coming soon...
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 }
