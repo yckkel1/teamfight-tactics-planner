@@ -12,7 +12,7 @@
     },
     "ability": {
       "name": "Blade Vigor",
-      "tags": ["active", "self-heal", "single-target"],
+      "tags": ["active", "self-heal", "single-target", "physical"],
       "stats": {
         "heal_hp_pct": 4,
         "heal_ap_flat": [100, 105, 110],
@@ -22,7 +22,7 @@
         "amp_applies": ["heal", "damage"],
         "amp_curve": "linear"
       },
-      "text": "Heals (4% max HP + 100/105/110 AP) and deals [25/40/55 AP] magic + [100/150/225 AD] to current target. Healing and damage increase up to 100% based on missing HP."
+      "text": "Heals (4% max HP + 100/105/110 AP) and deals [25/40/55 AP + 100/150/225 AD] damage to current target. Healing and damage increase up to 100% based on missing HP."
     }
   },
   {
@@ -38,7 +38,7 @@
     },
     "ability": {
       "name": "Rising Spell Force",
-      "tags": ["active", "blink", "single-target", "self-buff"],
+      "tags": ["active", "single-target", "mixed"],
       "stats": {
         "dmg_ap_flat": [230, 350, 600],
         "dmg_ad_flat": [115, 175, 300],
@@ -48,7 +48,7 @@
         "ap_per_potential_flat": 4,
         "buff_duration": "combat"
       },
-      "text": "Fires a blast at current target, dealing [230/350/600 AP] magic + [115/175/300 AD] damage. Blinks a short distance, then gains 25% attack speed for 5s and +4 AD and +4 AP per Potential for the rest of combat."
+      "text": "Fires a blast at current target, dealing [230/350/600 AP + 115/175/300 AD] damage. Blinks a short distance, then gains 25% attack speed for 5s and +4 AD and +4 AP per Potential for the rest of combat."
     }
   },
   {
@@ -64,7 +64,7 @@
     },
     "ability": {
       "name": "Mighty Blade of Justice",
-      "tags": ["active", "blink", "single-target", "self-buff"],
+      "tags": ["active", "stacking", "single-target", "physical"],
       "stats": {
         "heal_hp_pct": 8,
         "heal_ap_flat": [330, 360, 390],
@@ -75,7 +75,7 @@
         "stack_max_hp_per_potential_flat": [2, 4, 6],
         "stack_duration": "combat"
       },
-      "text": "Heals for (8% max HP + [330/360/390 AP] magic and deals (10% HP + [80/100/125 AD]) as physical damage to the target. On cast, gain 1 stack; each stack grants +4 max HP plus +2/4/6 max HP per Potential for the rest of combat."
+      "text": "Heals for 8% max HP + [330/360/390 AP] and deals [10% HP + 80/100/125 AD] to the target. On cast, gain 1 stack; each stack grants +4 max HP plus +2/4/6 max HP per Potential for the rest of combat."
     }
   },
   {
@@ -91,7 +91,7 @@
     },
     "ability": {
       "name": "Gadagadagada!",
-      "tags": ["passive", "active", "stacking", "self-buff", "ally-buff"],
+      "tags": ["passive", "active", "ally-buff", "physical"],
       "stats": {
         "as_per_attack_same_target_pct": 8,
         "as_stack_cap_pct": 80,
@@ -101,7 +101,7 @@
         "ally_targets": 2,
         "ally_targeting": "nearby_allies_prioritize_attack"
       },
-      "text": "Passive: Gain 8% Attack Speed per consecutive attack on the same target (up to 80%). Active: For 6s, gain 90% AD and grant 2 nearby allies 20/25/35% AD, prioritizing attack-focused allies."
+      "text": "Passive: Gain 8% Attack Speed per consecutive attack on the same target (up to 80%). Active: For 6s, gain 90% AD and grant 2 nearby allies [20/25/35 %] AD, prioritizing attack-focused allies."
     }
   },
   {
@@ -117,15 +117,14 @@
     },
     "ability": {
       "name": "Spirit Spear",
-      "tags": ["active", "projectile", "mixed-damage", "overkill-carryover"],
+      "tags": ["active", "projectile", "mixed", "single-target"],
       "stats": {
-        "targeting": "farthest enemy",
+        "enemy_targeting": "farthest enemy",
         "dmg_ad_flat": [440, 660, 1035],
         "dmg_ap_flat": [60, 90, 135],
-        "damage_type": "mixed",
         "pierce_on_kill": true
       },
-      "text": "Hurls a spear at the farthest enemy, dealing 440/660/1035 AD + 60/90/135 AP to the first enemy hit. If that enemy dies, the spear continues and applies the overkill damage to the next enemy hit."
+      "text": "Hurls a spear at the farthest enemy, dealing [440/660/1035 AD + 60/90/135 AP] to the first enemy hit. If that enemy dies, the spear continues and applies the overkill damage to the next enemy hit."
     }
   },
   {
@@ -141,7 +140,7 @@
     },
     "ability": {
       "name": "Unleash the Demon",
-      "tags": ["passive", "on-hit", "shred", "scales-with-tactician-level"],
+      "tags": ["passive", "self-scale", "target-shred", "magic"],
       "stats": {
         "on_hit_ap_flat": [33, 50, 75],
         "tactician_power": [
@@ -166,7 +165,7 @@
           }
         ]
       },
-      "text": "Passive: Attacks deal [33/50/75 AP] bonus magic damage. Gains additional power by Tactician level. Level 6+: every 3rd attack launches a wave that deals [50/75/110 AP] magic damage and Shreds 20% MR for 3s. Level 9+: every attack launches a (farther-traveling) wave with the same damage and shred."
+      "text": "Passive: Attacks deal [33/50/75 AP] bonus damage. Gains additional power by Tactician level. Level 6+: every 3rd attack launches a wave that deals [50/75/110 AP] damage and Shreds 20% MR for 3s. Level 9+: every attack launches a (farther-traveling) wave with the same damage and shred."
     }
   },
   {
@@ -182,15 +181,15 @@
     },
     "ability": {
       "name": "Eye of the Hurricane",
-      "tags": ["active", "magic-damage", "self-heal", "multiple-targets", "stun"],
+      "tags": ["active", "self-heal", "multiple-targets", "target-stun", "magic"],
       "stats": {
-        "targeting": "2 nearest enemies",
+        "enemy_targets": 2,
+        "enemy_targeting": "nearest-enemies",
         "heal_hp_pct": 5,
         "dmg_ap_flat": [130, 195, 300],
-        "damage_type": "magic",
         "stun_on_damage": true
       },
-      "text": "Heal [5% HP + 210 AP], then deal [130/195/300 AP] magic damage to the 2 nearest enemies and stun them for 1s."
+      "text": "Heal [5% HP + 210 AP], then deal [130/195/300 AP] damage to the 2 nearest enemies and stun them for 1s."
     }
   },
   {
@@ -206,14 +205,13 @@
     },
     "ability": {
       "name": "Twin Cannon Fire",
-      "tags": ["magic", "projectile", "mana-restore", "single-target"],
+      "tags": ["active", "projectile", "mana-restore", "single-target", "magic"],
       "stats": {
         "num_shots": 4,
         "dmg_ap_flat": [85, 130, 225],
-        "mana_restore_on_miss_flat": [8, 8, 15],
-        "damage_type": "magic"
+        "mana_restore_on_miss_flat": [8, 8, 15]
       },
-      "text": "Fire 4 shots towards the target. Each deals [85/130/225 AP] magic damage to the first enemy hit. For each miss, restore 8/8/15 mana."
+      "text": "Fire 4 shots towards the target. Each deals [85/130/225 AP] damage to the first enemy hit. For each miss, restore [8/8/15] mana."
     }
   },
   {
@@ -229,15 +227,14 @@
     },
     "ability": {
       "name": "Regolith Resistance",
-      "tags": ["passive", "physical", "armor-scaling"],
+      "tags": ["passive", "active", "multiple-targets", "physical"],
       "stats": {
         "passive_armor_per_item_flat": 12,
         "dmg_ap_flat": 60,
         "armor_pct": 405,
-        "damage_type": "physical",
-        "targeting": "cone"
+        "enemy_targeting": "cone"
       },
-      "text": "Passive: Gain 12 Armor per item equipped. Active: Deal [60 AP + 405% Armor] physical damage to enemies in a cone."
+      "text": "Passive: Gain 12 Armor per item equipped. Active: Deal [60 AP + 405% Armor] damage to enemies in a cone."
     }
   },
   {
@@ -253,14 +250,13 @@
     },
     "ability": {
       "name": "Spinning Soul-Saw",
-      "tags": ["shield", "physical", "single-target"],
+      "tags": ["active", "self-shield", "single-target", "physical"],
       "stats": {
         "shield_flat": [90, 110, 150],
         "shield_duration_sec": 2,
-        "dmg_ad_flat": [150, 225, 340],
-        "damage_type": "physical"
+        "dmg_ad_flat": [150, 225, 340]
       },
-      "text": "Gain a [90/110/150 AD] shield for 2s, then deal [150/225/340 AD] physical damage to the target."
+      "text": "Gain a [90/110/150 AD] shield for 2s, then deal [150/225/340 AD] damage to the target."
     }
   },
   {
@@ -276,15 +272,14 @@
     },
     "ability": {
       "name": "Unbreakable Celestial Lance",
-      "tags": ["magic", "line", "damage-reduction"],
+      "tags": ["active", "multiple-targets", "damage-reduction", "magic"],
       "stats": {
         "dmg_ap_flat": [130, 195, 295],
         "damage_reduction_pct": [20, 30, 45],
         "damage_reduction_duration_sec": 4,
-        "targeting": "short-line-through-target",
-        "damage_type": "magic"
+        "enemy_targeting": "short-line-through-target"
       },
-      "text": "Deal [130/195/295 AP] magic damage in a short line through the target, then reduce damage taken by 20/30/45% for 4 seconds."
+      "text": "Deal [130/195/295 AP] damage in a short line through the target, then reduce damage taken by [20/30/45 %] for 4 seconds."
     }
   },
   {
@@ -300,17 +295,16 @@
     },
     "ability": {
       "name": "Star Cutter",
-      "tags": ["physical", "line", "returning"],
+      "tags": ["active", "multiple-targets", "physical"],
       "stats": {
         "projectile_range_hex": 2,
         "returns": true,
         "dmg_ad_flat": [170, 255, 385],
         "r": [20, 30, 45],
         "dmg_falloff_per_hit_pct": 40,
-        "targeting": "2-hex-returning-line-through-target",
-        "damage_type": "physical"
+        "enemy_targeting": "2-hex-returning-line-through-target"
       },
-      "text": "Launch a returning blade 2 hexes through the current target. It deals (170/255/385 physical + 20/30/45 magic) as physical damage to enemies hit, reduced by 40% per hit."
+      "text": "Launch a returning blade 2 hexes through the current target. It deals [170/255/385 AD + 20/30/45 AP] damage to enemies hit, reduced by 40% per hit."
     }
   },
   {
@@ -326,13 +320,12 @@
     },
     "ability": {
       "name": "Bright Star Blast",
-      "tags": ["magic", "single-target", "mr-shred"],
+      "tags": ["active", "single-target", "target-shred", "magic"],
       "stats": {
         "dmg_ap_flat": [215, 325, 485],
-        "shred_mr_flat": 10,
-        "damage_type": "magic"
+        "shred_mr_flat": 10
       },
-      "text": "Deal [215/325/485 AP] magic damage to the target and reduce their Magic Resist by 10."
+      "text": "Deal [215/325/485 AP] damage to the target and reduce their Magic Resist by 10."
     }
   },
   {
@@ -348,15 +341,336 @@
     },
     "ability": {
       "name": "Reality Ripple",
-      "tags": ["heal", "magic", "aoe"],
+      "tags": ["active", "self-heal", "multiple-targets", "magic"],
       "stats": {
         "heal_ap_flat": [240, 280, 350],
         "dmg_hp_pct": 7,
         "dmg_ap_flat": 150,
         "damage_type": "magic",
-        "targeting": "1-hex-radius"
+        "enemy_targeting": "1-hex-radius"
       },
       "text": "Heal [240/280/350 AP], then deal [7% HP + 150 AP] magic damage to enemies within a 1-hex radius."
     }
-  }
+  },
+  {
+    "name": "Dr. Mundo",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [50, 75, 113],
+      "as": 0.60,
+      "armor": 40,
+      "mr": 40,
+      "range": 1,
+      "mana": { "start": 30, "max": 90 }
+    },
+    "ability": {
+      "name": "Steel Chair Slam",
+      "tags": ["passive", "active", "on-hit", "single-target", "physical"],
+      "stats": {
+        "passive_cooldown_sec": 7,
+        "dmg_hp_pct": 8,
+        "dmg_ad_flat": [50, 75, 125],
+        "max_hp_flat": [240, 280, 350],
+        "gain_duration_sec": 1.5,
+        "trigger_passive_on_cast": true
+      },
+      "text": "Passive: Every 7 seconds the next attack deals [8% HP + 50/75/125 AD] bonus physical damage. Gain [240/280/350 AP] maximum health over 1.5 seconds and immediately trigger the passive."
+    }
+  },
+  {
+    "name": "Gangplank",
+    "baseStats": {
+      "hp": [750, 1350, 2430],
+      "ad": [45, 68, 101],
+      "as": 0.80,
+      "armor": 50,
+      "mr": 50,
+      "range": 1,
+      "mana": { "start": 0, "max": 50 }
+    },
+    "ability": {
+      "name": "Golden Giga Gun",
+      "tags": ["active", "single-target", "gold-generating", "physical"],
+      "stats": {
+        "dmg_ad_flat": [305, 460, 815],
+        "gold_generating_possibility": 0.3,
+        "enemy_targeting": "lowest-health-enemy-within-2-hexes"
+      },
+      "text": "Deal [305/460/815 AD] damage to the lowest health enemy within 2 hexes. If the target dies, [30% AP] chance to gain 1 gold."
+    }
+  },
+  {
+    "name": "Janna",
+    "baseStats": {
+      "hp": [600, 1080, 1944],
+      "ad": [35, 53, 79],
+      "as": 0.70,
+      "armor": 25,
+      "mr": 25,
+      "range": 4,
+      "mana": { "start": 10, "max": 60 }
+    },
+    "ability": {
+      "tags": ["active", "ally-shield", "multiple-targets", "magic"],
+      "name": "Crystal Chrysalis",
+      "stats": {
+        "shield_ap_flat": [80, 100, 135],
+        "shield_duration_sec": 4,
+        "ally_targets": 2,
+        "ally_targeting": "lowest-health-allies",
+        "num_shots": 4,
+        "dmg_ap_flat": [130, 195, 310],
+        "enemy_targets": 2,
+        "enemy_targeting": "closest-enemies",
+        "damage_split": true
+      },
+      "text": "Grant [80/100/135] shield to the 2 lowest Health allies for 4 seconds and fire 4 butterflies dealing [520/780/1240 AP] damage split between the 2 closest enemies."
+    }
+  },  
+  {
+    "name": "Jhin",
+    "baseStats": {
+      "hp": [550, 990, 1782],
+      "ad": [64, 96, 144],
+      "as": 0.90,
+      "armor": 25,
+      "mr": 25,
+      "range": 4,
+      "mana": { "start": 0, "max": 4 }
+    },
+    "ability": {
+      "name": "The Curtain Falls",
+      "tags": ["passive", "on-hit", "single-target", "physical"],
+      "stats": {
+        "as_override": [0.75, 0.75, 0.85],
+        "as_to_ad_bonus_ratio": 0.8,
+        "as_conversion_bonus_only": true,
+
+        "on_hit_every_attacks": 4,
+        "on_hit_ad_flat": [220, 330, 510],
+        "damage_type": "physical"
+      },
+      "text": "Passive: Attack Speed is always [0.75/0.75/0.85]. Convert 1% bonus Attack Speed into 0.8% Attack Damage. Every fourth attack is enhanced to deal [220/330/510 AD] damage."
+    }
+  },
+  {
+    "name": "Kai'Sa",
+    "baseStats": {
+      "hp": [550, 990, 1782],
+      "ad": [45, 68, 101],
+      "as": 0.70,
+      "armor": 25,
+      "mr": 25,
+      "range": 4,
+      "mana": { "start": 0, "max": 50 }
+    },
+    "ability": {
+      "name": "Missile Massacre",
+      "tags": ["active", "projectile", "multiple-targets", "physical"],
+      "stats": {
+        "on_kill_ad_permanent_pct": 1,
+        "num_shots": 8,
+        "dmg_ad_flat": [32, 48, 75],
+        "dmg_ap_flat": [6, 8, 14],
+        "damage_split": true,
+        "enemy_targeting": "target-and-nearby-enemies"
+      },
+      "text": "Passive: Kills grant 1% permanent Attack Damage. Active: Fire 8 missiles divided between the target and nearby enemies. Each missile deals [6/8/14 AP + 32/48/75 AD] damage."
+    }
+  },  
+  {
+    "name": "Katarina",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [35, 53, 79],
+      "as": 0.75,
+      "armor": 55,
+      "mr": 55,
+      "range": 1,
+      "mana": { "start": 0, "max": 30 }
+    },
+    "ability": {
+      "name": "Teleports Behind You",
+      "tags": ["active", "multiple-targets", "magic"],
+      "stats": {
+        "num_blinks": 2,
+        "enemy_targeting": "lowest-health-enemy-within-2-hexes",
+        "dmg_ap_flat": [140, 210, 325],
+        "second_blink_dmg_ap_per_potential_pct": 13
+      },
+      "text": "Blink to the enemy with the lowest health within 2 hexes and deal [140/210/325 AP] damage to enemies in a 1-hex radius. Blink again, dealing 13% per potential of first blink damage."
+    }
+  },
+  {
+    "name": "Kobuko",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [50, 75, 113],
+      "as": 0.65,
+      "armor": 40,
+      "mr": 40,
+      "range": 1,
+      "mana": { "start": 20, "max": 70 }
+    },
+    "ability": {
+      "name": "Golden Paw Mantra",
+      "tags": ["active", "self-shield", "on-hit", "target-stun", "single-target", "physical"],
+      "stats": {
+        "shield_flat": [325, 375, 450],
+        "shield_duration_sec": 3,
+        "on_hit_hp_pct": 18,
+        "on_hit_ad_flat": [100, 125, 155],
+        "stun_duration_sec": 1.5
+      }
+    }
+  },
+  {
+    "name": "Lux",
+    "baseStats": {
+      "hp": [550, 990, 1782],
+      "ad": [35, 53, 79],
+      "as": 0.75,
+      "armor": 20,
+      "mr": 20,
+      "range": 4,
+      "mana": { "start": 20, "max": 60 }
+    },
+    "ability": {
+      "name": "Soulfire Explosion",
+      "tags": ["active", "projectile", "multiple-targets", "magic", "target-shred"],
+      "stats": {
+        "enemy_targeting": "largest-group-containing-target-in-1-hex",
+        "shred_mr_pct": 20,
+        "shred_duration_sec": 5,
+        "dmg_ap_flat": [300, 450, 700],
+        "damage_split": true,
+        "per_target_ap_flat": [90, 135, 210]
+      }
+    },
+    "text": "Fire an energy ball towards the largest group of enemies containing the target. On arrival, 20% Shred enemies in a 1-hex radius for 5 seconds and deal [300/450/700 AP] damage split between them plus [90/135/210 AP] damage to each."
+  },
+  {
+    "name": "Rakan",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [50, 73, 113],
+      "as": 0.60,
+      "armor": 50,
+      "mr": 50,
+      "range": 1,
+      "mana": { "start": 25, "max": 75 }
+    },
+    "ability": {
+      "tags": ["active", "ally-heal", "multiple-targets", "magic"],
+      "name": "Crystal Chrysalis",
+      "stats": {
+        "heal_ap_flat": [350, 400, 625],
+        "dmg_ap_flat": [55, 85, 130],
+        "num_targets": 3,
+        "targeting": "3-closest-enemies",
+        "ally_targets": 2,
+        "ally_targeting": "lowest-percent-health-allies",
+        "ally_heal_per_potential_flat": [55, 65, 85]
+      },
+      "text": "Heal [350/400/625 AP] and deal [55/85/130 AP] damage to the 3 closest enemies. Heal the 2 lowest percent Health allies for [55/65/85 per potential] health"
+    }
+  },
+  {
+    "name": "Shen",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [60, 90, 135],
+      "as": 0.60,
+      "armor": 45,
+      "mr": 45,
+      "range": 1,
+      "mana": { "start": 25, "max": 75 }
+    },
+    "ability": {
+      "name": "Power Suit: Full Charge",
+      "tags": ["passive", "self-shield", "on-hit", "single-target", "true-damage"],
+      "stats": {
+        "shield_ap_flat": [400, 475, 575],
+        "shield_duration_sec": 4,
+        "empower_next_attacks": 3,
+        "on_hit_true_dmg_from_mr_ratio_pct": [75, 115, 175]
+      },
+      "text": "Shield [400/475/575 AP] for 4 seconds. The next 3 attacks deal [75/115/175% magic resist] bonus true damage"
+    }    
+  },
+  {
+    "name": "Vi",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [50, 75, 113],
+      "as": 0.60,
+      "armor": 45,
+      "mr": 45,
+      "range": 1,
+      "mana": { "start": 20, "max": 75 }
+    },
+    "ability": {
+      "name": "Shining Knuckle Explosion",
+      "tags": ["passive", "active", "self-shield", "on-hit", "multiple-targets", "physical"],
+      "stats": {
+        "passive_armor_per_team_component_flat": 2,
+        "passive_mr_per_team_component_flat": 2,
+        "heal_ap_flat": [230, 280, 330],
+        "dmg_ad_flat": [150, 225, 350],
+        "enemy_target": "1-hex-centered-on-target",
+        "sunder_armor_pct": 20,
+        "sunder_duration_sec": 4
+      }
+    },
+    "text": "Passive: Gain 2 Armor and 2 Magic Resist for each component equipped to your team. Active: Heal [230/280/330 AP], deal [150/225/350 AD] damage in a 1-hex radius centered on the target, and 20% Sunder enemies hit for 4 seconds."    
+  },
+  {
+    "name": "Xayah",
+    "baseStats": {
+      "hp": [550, 990, 1782],
+      "ad": [45, 68, 101],
+      "as": 0.75,
+      "armor": 25,
+      "mr": 25,
+      "range": 4,
+      "mana": { "start": 20, "max": 70 }
+    },
+    "ability": {
+      "name": "Sharp Feathers Shine",
+      "tags": ["passive", "on-hit", "multiple-targets", "physical"],
+      "stats": {
+        "empower_next_attacks": 3,
+        "as_from_ap_ratio_pct": 80,
+        "dmg_ad_flat": [50, 75, 115],
+        "num_targets": 3,
+        "enemy_targeting": "target-and-2-nearby-enemies"
+      }
+    },
+    "text": "Gain [80% AP] attack speed for 3 attacks. These attacks deal [50/75/115 AD] bonus physical damage to the target and 2 nearby enemies"
+  },
+  {
+    "name": "Xin Zhao",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [50, 75, 113],
+      "as": 0.65,
+      "armor": 45,
+      "mr": 45,
+      "range": 1,
+      "mana": { "start": 10, "max": 65 }
+    },
+    "ability": {
+      "name": "Guarding Crescent",
+      "tags": ["active", "self-heal", "multiple-targets", "target-stun", "magic"],
+      "stats": {
+        "heal_ap_flat": [290, 360, 450],
+        "dmg_ad_flat": [100, 150, 235],
+        "enemy_targeting": "2-hex-radius",
+        "mark_current_target": true,
+        "damage_reduction_from_unmarked_pct": 40,
+        "damage_reduction_duration_sec": 3
+      },
+      "text": "Heal [290/360/450 AP], deal [100/150/235 AD] damage to enemies in a 2-hex radius, and mark the current target. For 3 seconds, take 40% reduced damage from unmarked enemies."
+    }
+  }      
 ]
