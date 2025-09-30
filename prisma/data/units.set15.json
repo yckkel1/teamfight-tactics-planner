@@ -117,12 +117,13 @@
     },
     "ability": {
       "name": "Spirit Spear",
-      "tags": ["active", "projectile", "mixed", "single-target"],
+      "tags": ["active", "projectile", "overkill-carryover", "single-target", "mixed"],
       "stats": {
         "enemy_targeting": "farthest enemy",
         "dmg_ad_flat": [440, 660, 1035],
         "dmg_ap_flat": [60, 90, 135],
-        "pierce_on_kill": true
+        "carryover_targets": 1,
+        "carryover_targeting": "next-enemy-hit"
       },
       "text": "Hurls a spear at the farthest enemy, dealing [440/660/1035 AD + 60/90/135 AP] to the first enemy hit. If that enemy dies, the spear continues and applies the overkill damage to the next enemy hit."
     }
@@ -672,5 +673,573 @@
       },
       "text": "Heal [290/360/450 AP], deal [100/150/235 AD] damage to enemies in a 2-hex radius, and mark the current target. For 3 seconds, take 40% reduced damage from unmarked enemies."
     }
-  }      
+  },
+  {
+    "name": "Ahri",
+    "baseStats": {
+      "hp": [650, 1170, 2106],
+      "ad": [40, 60, 90],
+      "as": 0.75,
+      "armor": 30,
+      "mr": 30,
+      "range": 4,
+      "mana": { "start": 10, "max": 50 }
+    },
+    "ability": {
+      "name": "Pure Heart Breaker",
+      "tags": ["active", "single-target", "overkill-carryover", "magic"],
+      "stats": {
+        "dmg_ap_flat": [460, 690, 1275],
+        "amp_dmg_missing_target_hp_pct_max": 50,
+        "overkill_carryover_pct": 55,
+        "carryover_targets": 2,
+        "carryover_targeting": "2-closest-enemies",
+        "per_target_ap_flat": [10, 15, 25]
+      },
+      "text": "Deal [460/690/1275 AP] damage to the current target, increased up to 50% based on the target's missing health. If the target dies, deal 55% of overkill damage split between the 2 closest enemies, plus [10/15/25 AP] magic damage per target"
+    }
+  }, 
+  {
+    "name": "Caitlyn",
+    "baseStats": {
+      "hp": [650, 1170, 2106],
+      "ad": [55, 83, 124],
+      "as": 0.75,
+      "armor": 30,
+      "mr": 30,
+      "range": 4,
+      "mana": { "start": 0, "max": 60 }
+    },
+    "ability": {
+      "name": "Magic Bouncing Bullet",
+      "tags": ["active", "projectile", "multiple-targets", "physical"],
+      "stats": {
+        "enemy_targeting": "farthest-enemy",
+        "dmg_ad_flat": [330, 495, 790],
+        "dmg_ap_flat": [30, 45, 70],
+        "bounce_dmg_ad_flat": [85, 130, 205],
+        "bounce_targeting": "nearby-enemy",
+        "bounce_count_base_flat": 1,
+        "bounce_additional_per_potential_flat": 1
+      },
+      "text": "Fire a bullet at the farthest enemy, dealing [330/495/790 AD + 30/45/70 AP] physical damage to the first target hit. The bullet bounces to a nearby enemy, dealing [85/130/205 AD] physical damage. Bullets bounce additional [3/5/7 potential] times"
+    }
+  },
+  {
+    "name": "Darius",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [50, 75, 113],
+      "as": 0.8,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 0, "max": 30 }
+    },
+    "ability": {
+      "name": "Grand Guillotine",
+      "tags": ["active", "self-heal", "single-target", "recast", "physical"],
+      "stats": {
+        "heal_ap_flat": [90, 130, 170],
+        "dmg_ad_flat": [215, 325, 520],
+        "amp_dmg_tank_pct": 60,
+        "on_kill_dmg_recast_pct": 75
+      },
+      "text": "Heal [90/130/170 AP], then deal [215/325/520 AD] physical damage to the current target, increased by 60% against Tanks. If the target dies, immediately recast dealing 75% damage."
+    }
+  },
+  {
+    "name": "Jayce",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [90, 135, 203],
+      "as": 0.7,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Thundering Hammerstrike",
+      "tags": ["active", "target-sunder", "physical"],
+      "stats": {
+        "dmg_ad_flat": [180, 270, 425],
+        "dmg_ap_flat": [20, 30, 50],
+        "enemy_targeting": "1-hex-radius-centered-on-target",
+        "num_sparks_per_potential_flat": 1,
+        "sparks_targeting": "3-nearest-enemies",
+        "spark_dmg_ad_flat": [70, 105, 170],
+        "spark_sunder_armor_per_potential_flat": 1
+      },
+      "text": "Deal [180/270/425 AD + 20/30/50 AP] physical damage to enemies in a 1-hex radius centered on the target. Shoot [3/5/7 potential] sparks split between the 3 nearest enemies. Sparks deal [70/105/170 AD] physical damage and reduce armor by [3/5/7 potential]"
+    }
+  },
+  {
+    "name": "Malzahar",
+    "baseStats": {
+      "hp": [800, 1440, 2592],
+      "ad": [40, 60, 90],
+      "as": 0.7,
+      "armor": 30,
+      "mr": 30,
+      "range": 4,
+      "mana": { "start": 0, "max": 30 }
+    },
+    "ability": {
+      "name": "Insidious Whispers",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Infect the closest 1 uninfected targets, dealing [515/775/1315 AP] magic damage over 15 seconds. If an infected target dies, the infection spreads to the nearest uninfected target for any remaining time.If all enemies are infected, this effect can stack."
+  },
+  {
+    "name": "Neeko",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [45, 68, 101],
+      "as": 0.6,
+      "armor": 50,
+      "mr": 50,
+      "range": 1,
+      "mana": { "start": 20, "max": 70 }
+    },
+    "ability": {
+      "name": "Falling Flower Eruption",
+      "tags": [],
+      "stats": {}      
+    },
+    "text": "Gain 40% Durability and heal [300/350/450 AP] over 2 seconds, and then deal [120/180/290 AP] magic damage to enemies in a 2-hex radius."
+  },
+  {
+    "name": "Senna",
+    "baseStats": {
+      "hp": [650, 1170, 2106],
+      "ad": [55, 83, 124],
+      "as": 0.75,
+      "armor": 30,
+      "mr": 30,
+      "range": 4,
+      "mana": { "start": 0, "max": 60 }
+    },
+    "ability": {
+      "name": "Super Beam Cannon",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Over 1 second, deal [360/540/875 AD + 40/60/95 AP] physical damage in a line through the current target. Enemies after the first take 22% damage instead. When no targets are left, regain mana based on the time remaining."
+  },
+  {
+    "name": "Swain",
+    "baseStats": {
+      "hp": [950, 1710, 3078],
+      "ad": [60, 90, 135],
+      "as": 0.6,
+      "armor": 50,
+      "mr": 50,
+      "range": 1,
+      "mana": { "start": 20, "max": 80 }
+    },
+    "ability": {
+      "name": "Glittering Plumage Regalia",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Gain [10% HP + 300/340/380 AP] max Health, then deal [25/35/55] magic damage every second to enemies in a 2-hex radius. Subsequent casts heal [10% HP + 300/340/380 AP] and increase the damage by [6/9/14]."
+  },
+  {
+    "name": "Udyr",
+    "baseStats": {
+      "hp": [900, 1620, 2916],
+      "ad": [45, 68, 101],
+      "as": 0.7,
+      "armor": 50,
+      "mr": 50,
+      "range": 1,
+      "mana": { "start": 40, "max": 80 }
+    },
+    "ability": {
+      "name": "Blazing Phoenix Stance",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Make 3 rapid attacks. Each heals Udyr for [130/170/220 AP] and deals [35/50/80] additional damage to enemies in a 1-hex radius."
+  },
+  {
+    "name": "Viego",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [30, 45, 68],
+      "as": 0.85,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Combo of the Ruined King",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Attacks deal additional [30/45/80 AP] damage. Active: The next three attacks unleash a devastating combo. Pommel Bash: Deal [100/150/270 AP] magic damage. Rising Slash: Deal [100/150/270 AP] magic damage and briefly Stun the target. Falling Slash: Deal [210/315/560] magic damage."
+  },
+  {
+    "name": "Yasuo",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [70, 105, 158],
+      "as": 0.75,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Unleash the Stun",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Deal [150/225/360 AD + 30/45/70 AP] physical damage to 3 closest enemies."
+  },
+  {
+    "name": "Ziggs",
+    "baseStats": {
+      "hp": [650, 1170, 2106],
+      "ad": [20, 30, 45],
+      "as": 0.80,
+      "armor": 30,
+      "mr": 30,
+      "range": 4,
+      "mana": { "start": 0, "max": 90 }
+    },
+    "ability": {
+      "name": "Orbital Ordinance",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Attacks are bouncing bombs that deal additional [50/75/120 AP] magic damage to the first enemy hit. Active: Deal [230/345/550 AP] magic damage in a 1-hex radius centered on the target."
+  },
+  {
+    "name": "Akali",
+    "baseStats": {
+      "hp": [1050, 1890, 3402],
+      "ad": [30, 45, 68],
+      "as": 0.70,
+      "armor": 65,
+      "mr": 65,
+      "range": 1,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Piercing Phantom Strike",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Mark the farthest unmarked target within 4 hexes, then dash through all marked enemies in order. Each dash deals [95/145/1000 AP] magic damage to its target and [80/120/1000] magic damage to other enemies hit. If only one enemy remains dash 3 times instead"
+  },
+  {
+    "name": "Ashe",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [65, 98, 146],
+      "as": 0.80,
+      "armor": 35,
+      "mr": 35,
+      "range": 4,
+      "mana": { "start": 0, "max": 80 }
+    },
+    "ability": {
+      "name": "Gates of Avarosa",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "The next 8 attacks fire bonus arrows dealing [136/208/1000 AD + 8/16/80 AP] total physical damage split between the target and up to two random enemies within 2 hexes."
+  },
+  {
+    "name": "Jarvan IV",
+    "baseStats": {
+      "hp": [1100, 1980, 3564],
+      "ad": [60, 90, 135],
+      "as": 0.65,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 45, "max": 150 }
+    },
+    "ability": {
+      "name": "Mega Drill Crash",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Gain [12% HP + 400/450/1500] Shield for 4 seconds, then slam into a group of enemies, dealing [100/150/3000 AP] magic damage to enemies within a 2 hex radius and Stunning them for [1.5/1.75/8] seconds"
+  },
+  {
+    "name": "Jinx",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [70, 105, 158],
+      "as": 0.75,
+      "armor": 35,
+      "mr": 35,
+      "range": 4,
+      "mana": { "start": 10, "max": 80 }
+    },
+    "ability": {
+      "name": "Star Rocket Blast Off!",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Attacks grant [6/6/30% AP] stacking Attack Speed, up to [60/60/300% AP]. Critical strikes instead grant [9/9/40% AP]. Active: Deal [200/300/900 AD] physical damage to the target and [575/875/4000 AD] physical damage split across a 2-hex radius centered on the target."
+  },
+  {
+    "name": "Poppy",
+    "baseStats": {
+      "hp": [1100, 1980, 3564],
+      "ad": [65, 98, 146],
+      "as": 0.60,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 45, "max": 105 }
+    },
+    "ability": {
+      "name": "Spinning Galaxy Hammer",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Gain [10% HP + 280/330/900 AP] Shield for 4 seconds. When it breaks, deal [250/375/4000 AD] physical damage to the target and [125/200/1500 AD] physical damage to other enemies in a 1-hex radius centered on the target. The target is Stunned for [0.5/0.5/8] seconds based on how long the shield held, and other enemies are briefly stunned."
+  },
+  {
+    "name": "Ryze",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [50, 75, 113],
+      "as": 0.80,
+      "armor": 35,
+      "mr": 35,
+      "range": 4,
+      "mana": { "start": 10, "max": 60 }
+    },
+    "ability": {
+      "name": "Tsunami Beam",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Deal [770/1155/6000 AP] magic damage to the target over 3 seconds. Enemies in a 1-hex radius around the target take [110/165/1200 AP] damage over the same duration."
+  },
+  {
+    "name": "Samira",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [50, 75, 113],
+      "as": 0.75,
+      "armor": 45,
+      "mr": 45,
+      "range": 4,
+      "mana": { "start": 0, "max": 15 }
+    },
+    "ability": {
+      "name": "Soul Shot/Inner Arsenal",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: After casting, gain 1 Style and 5%% Omnivamp, up to 4 stacks. At max stacks, the next cast is Inner Arsenal Unleashed. Soul Shot: Deal [105/160/650 AD] physical damage to the target and dash a short distance. Inner Arsenal Unleashed: Double the passive bonus and leap to a nearby group of enemies, dealing [230/345/2200 AD + 50/75/225 AP] damage to all enemies in a 2-hex radius. Reset your Style to 0."
+  },
+  {
+    "name": "Sett",
+    "baseStats": {
+      "hp": [1100, 1980, 3564],
+      "ad": [60, 90, 135],
+      "as": 0.70,
+      "armor": 60,
+      "mr": 60,
+      "range": 1,
+      "mana": { "start": 40, "max": 100 }
+    },
+    "ability": {
+      "name": "Maximum Grit Overdrive",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Over a short duration, heal [12% HP + 260/335/1500 AP] and deal [140/210/2000 AD] physical damage to the target. Then, deal [4% + 120/180/750 AD] physical damage in a cone. Enemies in the center line take [10/15/45] more physical damage, increased based on healing received this combat."
+  },
+  {
+    "name": "Volibear",
+    "baseStats": {
+      "hp": [1050, 1890, 3402],
+      "ad": [75, 113, 169],
+      "as": 0.85,
+      "armor": 65,
+      "mr": 65,
+      "range": 1,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Ursine Instinct",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Every 4th attack deals [125/190/750 AD] physical damage in a 1-hex radius centered on the target. When changing targets, immediately slam for 70% damage. Active: For 5 seconds gain [125/125/500%] Attack Speed, [10/10/25% AP] Omnivamp, and crowd control immunity."
+  },
+  {
+    "name": "Yuumi",
+    "baseStats": {
+      "hp": [850, 1530, 2754],
+      "ad": [40, 60, 90],
+      "as": 0.80,
+      "armor": 35,
+      "mr": 35,
+      "range": 4,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Read Or Die",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Launch 20 pages dealing [25/38/150 AP] magic damage each, split between the target and enemies within 2 hexes. Each subsequent cast launches 4 more pages. Every 4 pages, launch a bonus page that deals [15/23/90 per potential] true damage."
+  },
+  {
+    "name": "Braum",
+    "baseStats": {
+      "hp": [1100, 1980, 3564],
+      "ad": [80, 120, 180],
+      "as": 0.75,
+      "armor": 70,
+      "mr": 70,
+      "range": 1,
+      "mana": { "start": 0, "max": 60 }
+    },
+    "ability": {
+      "name": "El Tigre Tornado",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Stun the target and spin them around for 1.5 seconds, dealing [575/865/9001 AD] physical damage to the target and [310/465/4501 AD] physical damage to other enemies in a 2-hex radius. THen throw the target forward, dealing [100/150/2000 AD] physical damage in a 1-hex area around the target. If the targt drops below [18/18/18% AP] health, throw them off the board instead"
+  },
+  {
+    "name": "Gwen",
+    "baseStats": {
+      "hp": [1150, 2070, 3726],
+      "ad": [20, 30, 45],
+      "as": 0.85,
+      "armor": 60,
+      "mr": 60,
+      "range": 2,
+      "mana": { "start": 0, "max": 40 }
+    },
+    "ability": {
+      "name": "Soul Stitch/Rip The Threads",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Attacks deal [10/15/400 AP] magic damage, and [40/60/1000 AP] magic damage split between enemies in a cone. Every 3rd cast is Rip The Threads. Soul Stitch: Fire 3 needles through the board, dealing [35/55/1000 AP] damage to enemies hit and leaving threads behind. Rip The Threads: Deal [320/450/9999 AP] magic damage split between all enemies and [80/120/9001 AP] bonus magic damage to each. Enemies near at least one thread take 10% more damage."
+  },
+  {
+    "name": "Lee Sin",
+    "baseStats": {
+      "hp": [1200, 2160, 3888],
+      "ad": [70, 105, 158],
+      "as": 0.90,
+      "armor": 70,
+      "mr": 70,
+      "range": 1,
+      "mana": { "start": 0, "max": 100 }
+    },
+    "ability": {
+      "name": "A Demonstration of Skill",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Field Lee Sin to choose a stance. Each stance has a unique ability, and grants Lee Sin a bonus trait."
+  },
+  {
+    "name": "Seraphine",
+    "baseStats": {
+      "hp": [900, 1620, 2916],
+      "ad": [50, 75, 113],
+      "as": 0.80,
+      "armor": 40,
+      "mr": 40,
+      "range": 1,
+      "mana": { "start": 0, "max": 140 }
+    },
+    "ability": {
+      "name": "Ultimate Friendship Bomb",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Ultimate Friendship Bomb's damage scales on Power of Friendship, which is based on all of your team's bonus stats. Stats on Seraphine contribute more. Active: Fire a friendship bomb towards the largest group of enemes within 1 hexes, dealing magic damage in a 2-hex radius."
+  },
+  {
+    "name": "Twisted Fate",
+    "baseStats": {
+      "hp": [900, 1620, 2916],
+      "ad": [30, 45, 68],
+      "as": 0.85,
+      "armor": 40,
+      "mr": 40,
+      "range": 4,
+      "mana": { "start": 40, "max": 120 }
+    },
+    "ability": {
+      "name": "52 Card Calamity",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Attacks bounce between 3 enemies, dealing [35/55/999 AP] bonus magic damage and marking enemies hit. Attacks deal 30% reduced damage per hit. Active: Deal [200/300/9999 AD] physical damage to the [4/4/20] closest enemies, and detonate their marks for [15/25/500 AP] magic damage each"
+  },
+  {
+    "name": "Varus",
+    "baseStats": {
+      "hp": [900, 1620, 2916],
+      "ad": [60, 90, 135],
+      "as": 0.80,
+      "armor": 40,
+      "mr": 40,
+      "range": 4,
+      "mana": { "start": 10, "max": 85 }
+    },
+    "ability": {
+      "name": "Level Zero: 100 Shot Demon",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: Gain mana when units die. Enemies grant 5, allies 3. Active: Fire 3 piercing arrows per second at random enemies until Varus is out of mana. Each arrow costs [12/12/6] mana and deals [85/130/666 AD + 10/15/200 AP] physical damage, reduced by 35% per hit."
+  },
+  {
+    "name": "Yone",
+    "baseStats": {
+      "hp": [1300, 2340, 4212],
+      "ad": [40, 60, 90],
+      "as": 0.90,
+      "armor": 75,
+      "mr": 75,
+      "range": 1,
+      "mana": { "start": 80, "max": 180 }
+    },
+    "ability": {
+      "name": "Dual Blade Technique: Inner Reflection",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Passive: attacks grant [4.5/4.5/25%] stacking Attack Speed and Movement Speed, and alternate between dealing [25/40/400 AD] bonus true damage and [100/160/999 AP] bonus magic damage. Active: Send an echo towards the two furthest enemies, dealing [120/180/9999 AD] physical damage and briefly Stunning enemies hit."
+  },
+  {
+    "name": "Zyra",
+    "baseStats": {
+      "hp": [750, 1350, 2430],
+      "ad": [60, 90, 135],
+      "as": 0.75,
+      "armor": 30,
+      "mr": 30,
+      "range": 4,
+      "mana": { "start": 40, "max": 100 }
+    },
+    "ability": {
+      "name": "Crystal Thorn Expansion",
+      "tags": [],
+      "stats": {}
+    },
+    "text": "Summon [4/4/20] untargetable Thornspitters that deal [90/135/999 AP] magic damage per attack and attack 4 times. Non-plant allies gain [10% + 25/40/999% AP] Attack Speed decaying over 4 seconds"
+  }
 ]
