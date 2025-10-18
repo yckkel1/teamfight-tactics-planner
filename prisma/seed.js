@@ -1,13 +1,9 @@
-// Seeds FULL Set 15 champion roster with their traits (names only) and costs.
-// Source: Mobalytics Set 15 Champions page (costs + traits). Run after `prisma migrate`.
-// Run: pnpm exec prisma db seed
-
 const { PrismaClient } = require("@prisma/client");
+const CONFIG = require("./config");
+const Logger = require("./utils/logger");
+
 const prisma = new PrismaClient();
 
-/**
- * Known class vs origin sets (from Mobalytics Classes/Origins pages).
- */
 const CLASS_TRAITS = new Set([
   "Bastion",
   "Duelist",
@@ -22,46 +18,6 @@ const CLASS_TRAITS = new Set([
   "Strategist",
 ]);
 
-async function upsertSet() {
-  return prisma.gameSet.upsert({
-    where: { name: "K.O. Coliseum" },
-    update: {},
-    create: { id: "set15", name: "K.O. Coliseum", startPatch: "15.0" },
-  });
-}
-
-async function upsertTrait(setId, name) {
-  const category = CLASS_TRAITS.has(name) ? "Class" : "Origin";
-  return prisma.trait.upsert({
-    where: { setId_name: { setId, name } },
-    update: { category },
-    create: { setId, name, category },
-  });
-}
-
-async function upsertUnit(setId, unit) {
-  return prisma.unit.upsert({
-    where: { setId_name: { setId, name: unit.name } },
-    update: { cost: unit.cost, role: unit.role ?? null },
-    create: {
-      setId,
-      name: unit.name,
-      cost: unit.cost,
-      role: unit.role ?? null,
-      baseStats: {},
-      ability: null,
-    },
-  });
-}
-
-async function linkUnitTraits(unitId, traitIds) {
-  await prisma.unitTrait.deleteMany({ where: { unitId } });
-  if (traitIds.length) {
-    await prisma.unitTrait.createMany({ data: traitIds.map((traitId) => ({ unitId, traitId })) });
-  }
-}
-
-// ===== Full roster from Mobalytics (name, cost, traits) =====
 const RAW_UNITS = [
   { name: "Aatrox", cost: 1, traits: ["Mighty Mech", "Heavyweight", "Juggernaut"] },
   { name: "Ahri", cost: 3, traits: ["Star Guardian", "Sorcerer"] },
@@ -130,25 +86,68 @@ const RAW_UNITS = [
   { name: "Zyra", cost: 5, traits: ["Crystal Gambit", "Rosemother"] },
 ];
 
-async function main() {
-  const set = await upsertSet();
+async function upsertSet() {
+  return prisma.gameSet.upsert({
+    where: { name: CONFIG.SET_NAME },
+    update: {},
+    create: { id: "set15", name: CONFIG.SET_NAME, startPatch: "15.0" },
+  });
+}
 
-  // Upsert traits
+async function upsertTrait(setId, name) {
+  const category = CLASS_TRAITS.has(name) ? "Class" : "Origin";
+  return prisma.trait.upsert({
+    where: { setId_name: { setId, name } },
+    update: { category },
+    create: { setId, name, category },
+  });
+}
+
+async function upsertUnit(setId, unit) {
+  return prisma.unit.upsert({
+    where: { setId_name: { setId, name: unit.name } },
+    update: { cost: unit.cost, role: unit.role ?? null },
+    create: {
+      setId,
+      name: unit.name,
+      cost: unit.cost,
+      role: unit.role ?? null,
+      baseStats: {},
+      ability: null,
+    },
+  });
+}
+
+async function linkUnitTraits(unitId, traitIds) {
+  await prisma.unitTrait.deleteMany({ where: { unitId } });
+  if (traitIds.length) {
+    await prisma.unitTrait.createMany({ data: traitIds.map((traitId) => ({ unitId, traitId })) });
+  }
+}
+
+async function main() {
+  const logger = new Logger("seed");
+
+  const set = await upsertSet();
+  logger.success(`Set upserted: ${set.name}`);
+
   const traitNames = Array.from(new Set(RAW_UNITS.flatMap((u) => u.traits)));
   const traitIdByName = new Map();
+  
   for (const name of traitNames) {
     const t = await upsertTrait(set.id, name);
     traitIdByName.set(name, t.id);
   }
+  logger.success(`Traits seeded: ${traitNames.length}`);
 
-  // Upsert units + links
   for (const u of RAW_UNITS) {
     const unit = await upsertUnit(set.id, u);
     const traitIds = u.traits.map((n) => traitIdByName.get(n)).filter(Boolean);
     await linkUnitTraits(unit.id, traitIds);
   }
+  logger.success(`Units seeded: ${RAW_UNITS.length}`);
 
-  console.log(`Seeded Set 15 roster: ${RAW_UNITS.length} units, ${traitNames.length} traits.`);
+  logger.info(`\nSeeded Set 15 roster: ${RAW_UNITS.length} units, ${traitNames.length} traits.`);
 }
 
 main()

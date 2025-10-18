@@ -1,34 +1,34 @@
-// file: prisma/print.abilities.js
-// Purpose: Print units with their abilities (name, tags, and key stats).
-// Usage: node prisma/print.abilities.js [--json] [--full] [--set "K.O. Coliseum"]
-
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const CONFIG = require("./config");
+const DatabaseHelper = require("./utils/db");
 
 const args = process.argv.slice(2);
 const asJson = args.includes("--json");
 const full = args.includes("--full");
 const onlyFilled = args.includes("--only-filled");
 const setIdx = args.indexOf("--set");
-const SET_NAME = setIdx !== -1 ? args[setIdx + 1] : "K.O. Coliseum";
+const SET_NAME = setIdx !== -1 ? args[setIdx + 1] : CONFIG.SET_NAME;
 
 function pad(s, n) {
   return String(s).padEnd(n, " ");
 }
+
 function fmtVal(v) {
   if (v == null) return "null";
   if (Array.isArray(v)) return v.join("/");
   if (typeof v === "object") return "{…}";
   return String(v);
 }
+
 function flattenStats(obj) {
   if (!obj || typeof obj !== "object") return [];
   return Object.entries(obj).map(([k, v]) => `${k}: ${fmtVal(v)}`);
 }
 
-(async () => {
+async function printUnits() {
+  const db = new DatabaseHelper();
+
   try {
-    const set = await prisma.gameSet.findUnique({
+    const set = await db.prisma.gameSet.findUnique({
       where: { name: SET_NAME },
       include: {
         units: {
@@ -54,7 +54,7 @@ function flattenStats(obj) {
         ability: u.ability || null,
       }));
       console.log(
-        JSON.stringify({ set: set.name, count: payload.length, units: payload }, null, 2),
+        JSON.stringify({ set: set.name, count: payload.length, units: payload }, null, 2)
       );
       return;
     }
@@ -65,25 +65,24 @@ function flattenStats(obj) {
     console.log(`\n=== UNITS & ABILITIES (${units.length}) ===`);
     console.log(`${pad("Cost", 4)}  ${pad("Unit", nameW)}  Ability / Summary`);
 
-    if (onlyFilled)
+    if (onlyFilled) {
       units = units.filter((u) => u.ability && Object.keys(u.ability || {}).length > 0);
+    }
 
     for (const u of units) {
       const ability = u.ability || null;
       const header = `${pad(u.cost, 4)}  ${pad(u.name, nameW)}`;
+      
       if (!ability) {
         console.log(`${header}  (no ability)`);
         continue;
       }
+      
       if (full) {
         console.log(`${header}  ${ability.name}`);
         console.log(`  tags: ${(ability.tags || []).join(", ")}`);
-        console.log(
-          `  stats: ${JSON.stringify(ability.stats || {}, null, 2)
-            .split("\n")
-            .map((l) => "  " + l)
-            .join("\n")}`,
-        );
+        const statsJson = JSON.stringify(ability.stats || {}, null, 2);
+        console.log(`  stats: ${statsJson.split("\n").map((l) => "  " + l).join("\n")}`);
         if (ability.text) console.log(`  text: ${ability.text}`);
       } else {
         const tags = (ability.tags || []).join(", ");
@@ -92,10 +91,16 @@ function flattenStats(obj) {
         if (statsList) console.log(`  · ${statsList}`);
       }
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
     process.exit(1);
   } finally {
-    await prisma.$disconnect();
+    await db.disconnect();
   }
-})();
+}
+
+if (require.main === module) {
+  printUnits();
+}
+
+module.exports = { printUnits };
