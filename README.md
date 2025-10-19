@@ -2,7 +2,7 @@
 
 A full-stack web application for planning and optimizing team compositions for TFT Set 15: K.O. Coliseum.
 
-**Live App:** [teamfight-tactics-planner.vercel.app](https://teamfight-tactics-planner.vercel.app)
+**Live App:** [teamfight-tactics-planner.online](https://teamfight-tactics-planner.online)
 
 ---
 
