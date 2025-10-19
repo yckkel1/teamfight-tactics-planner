@@ -8,14 +8,19 @@ import { itemsRoutes } from "./routes/items.routes.js";
 
 const app = Fastify({ logger: true });
 await app.register(sensible);
+const allowedOrigins = [
+  /^http:\/\/localhost:\d+$/,
+  /^http:\/\/127\.0\.0\.1:\d+$/,
+  "http://localhost:3000",
+  "https://teamfight-tactics-planner.online",
+  "https://www.teamfight-tactics-planner.online",
+  /\.vercel\.app$/,
+];
+
+console.log('CORS allowed origins:', allowedOrigins);
+
 await app.register(cors, {
-  origin: [
-    /^http:\/\/localhost:\d+$/,
-    /^http:\/\/127\.0\.0\.1:\d+$/,
-    "http://localhost:3000", // Next.js default
-    process.env.FRONTEND_URL || "https://www.teamfight-tactics-planner.online", // Add new domain
-    /\.vercel\.app$/, // Allow all Vercel preview deployments
-  ],
+  origin: allowedOrigins,
 });
 
 // health
