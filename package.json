@@ -21,7 +21,12 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "railway:install": "pnpm install --frozen-lockfile",
+    "railway:build": "pnpm --filter @data/models run build && pnpm --filter @app/api run build",
+    "railway:migrate": "pnpm exec prisma generate --schema prisma/schema.prisma && pnpm exec prisma migrate deploy --schema prisma/schema.prisma",
+    "railway:seed": "pnpm run db:seed && pnpm run db:seed:tiers && pnpm run db:seed:units && pnpm run db:seed:items",
+    "railway:start": "pnpm --filter @app/api run start"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",

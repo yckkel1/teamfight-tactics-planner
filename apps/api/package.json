@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsup src/server.ts --format esm --target node20 --dts --out-dir dist",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "railway:build": "pnpm run build",
+    "railway:start": "node dist/server.js"
   },
   "dependencies": {
     "@data/models": "workspace:*",
