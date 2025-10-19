@@ -13,7 +13,7 @@ await app.register(cors, {
     /^http:\/\/localhost:\d+$/,
     /^http:\/\/127\.0\.0\.1:\d+$/,
     "http://localhost:3000", // Next.js default
-    process.env.FRONTEND_URL || "https://your-vercel-app.vercel.app", // Add your Vercel URL
+    process.env.FRONTEND_URL || "https://www.teamfight-tactics-planner.online", // Add new domain
     /\.vercel\.app$/, // Allow all Vercel preview deployments
   ],
 });
