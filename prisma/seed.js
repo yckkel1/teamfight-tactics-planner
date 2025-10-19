@@ -127,27 +127,31 @@ async function linkUnitTraits(unitId, traitIds) {
 
 async function main() {
   const logger = new Logger("seed");
+  try {
+    const set = await upsertSet();
+    logger.success(`Set upserted: ${set.name}`);
 
-  const set = await upsertSet();
-  logger.success(`Set upserted: ${set.name}`);
+    const traitNames = Array.from(new Set(RAW_UNITS.flatMap((u) => u.traits)));
+    const traitIdByName = new Map();
+    
+    for (const name of traitNames) {
+      const t = await upsertTrait(set.id, name);
+      traitIdByName.set(name, t.id);
+    }
+    logger.success(`Traits seeded: ${traitNames.length}`);
 
-  const traitNames = Array.from(new Set(RAW_UNITS.flatMap((u) => u.traits)));
-  const traitIdByName = new Map();
-  
-  for (const name of traitNames) {
-    const t = await upsertTrait(set.id, name);
-    traitIdByName.set(name, t.id);
+    for (const u of RAW_UNITS) {
+      const unit = await upsertUnit(set.id, u);
+      const traitIds = u.traits.map((n) => traitIdByName.get(n)).filter(Boolean);
+      await linkUnitTraits(unit.id, traitIds);
+    }
+    logger.success(`Units seeded: ${RAW_UNITS.length}`);
+
+    logger.info(`\nSeeded Set 15 roster: ${RAW_UNITS.length} units, ${traitNames.length} traits.`);
+  } catch (error) {
+    logger.error(`Seed failed: ${error.message}`);
+    throw error; // Re-throw to fail the Railway build
   }
-  logger.success(`Traits seeded: ${traitNames.length}`);
-
-  for (const u of RAW_UNITS) {
-    const unit = await upsertUnit(set.id, u);
-    const traitIds = u.traits.map((n) => traitIdByName.get(n)).filter(Boolean);
-    await linkUnitTraits(unit.id, traitIds);
-  }
-  logger.success(`Units seeded: ${RAW_UNITS.length}`);
-
-  logger.info(`\nSeeded Set 15 roster: ${RAW_UNITS.length} units, ${traitNames.length} traits.`);
 }
 
 main()
